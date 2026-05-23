@@ -1,0 +1,11 @@
+.card-nutri {
+  width: 16.875rem;
+  border: 0.0625rem solid #d8cfdc;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #fff7ff;
+  font-family: Arial, sans-serif;
+}
+.conteudo-card {
+  padding: 0.875rem;
+}

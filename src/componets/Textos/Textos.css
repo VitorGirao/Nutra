@@ -1,0 +1,18 @@
+.nome-nutri {
+  font-size: 1rem;
+  margin: 0 0 0.25rem;
+  color: #2d2630;
+}
+
+.tipo-nutri {
+  font-size: 0.75rem;
+  margin: 0 0 0.875rem;
+  color: #5f5963;
+}
+
+.resumo-nutri {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #5f5963;
+  margin-bottom: 1.125rem;
+}

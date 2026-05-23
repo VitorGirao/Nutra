@@ -1,0 +1,31 @@
+import React from 'react';
+import FotoNutriCard from "../Imagens/FotoNutriCard/FotoNutriCard";
+import NomeNutricionista from "../Textos/NomeNutricionista";
+import TipoNutricionista from "../Textos/TipoNutricionista";
+import ResumoNutricionista from "../Textos/ResumoNutricionista";
+import Buttons from '../Buttons/Buttons';
+import { ChevronDown, ChevronRight, User, Filter } from "lucide-react";
+import "./CardNutricionista.css";
+
+
+function CardNutricionista({ foto, nome, tipo, resumo }) {
+  return (
+    <div className="card-nutri">
+      <FotoNutriCard foto={foto} nome={nome} />
+
+      <div className="conteudo-card">
+        <NomeNutricionista nome={nome} />
+        <TipoNutricionista tipo={tipo} />
+        <ResumoNutricionista resumo={resumo} />
+        <Buttons
+          label="Ver Perfil"
+          variant="primary"
+          size="small"
+          icon={<ChevronRight size={18} />}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default CardNutricionista;

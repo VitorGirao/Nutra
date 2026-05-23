@@ -1,15 +1,33 @@
-import React from 'react';
-import './Buttons.css';
+import "./Buttons.css";
 
-const Button = ({ label, onClick, variant = 'primary', size = 'medium' }) => {
-  return (  
-         <button 
-      className={`btn-base ${variant} ${size}`}
+const Button = ({
+  label,
+  onClick,
+  variant = "primary",
+  size = "medium",
+  icon,
+  iconOnly = false,
+}) => {
+
+  return (
+    <button
+      className={`
+        btn-base
+        ${variant}
+        ${size}
+        ${iconOnly ? "icon-only" : ""}
+      `}
       onClick={onClick}
     >
-      {label}
+
+      {!iconOnly && label}
+
+      {icon && (
+        <span className="btn-icon">
+          {icon}
+        </span>
+      )}
     </button>
-   
   );
 };
 
