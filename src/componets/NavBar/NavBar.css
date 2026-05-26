@@ -1,0 +1,93 @@
+/* === VARIÁVEIS DE COR === */
+/* Defina aqui as cores uma vez e use em todo o CSS */
+:root {
+    --cor-principal: #15B392;
+    --cor-hover:     #118F75;
+    --cor-pressed:   #44C2A8;
+}
+
+/* === RESET BÁSICO === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+#acoes{
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* === NAVBAR === */
+.navbar {
+    position: fixed;        /* fica grudada no topo ao rolar a página */
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--cor-principal);
+    padding: 0 4rem;
+    height: 4.5rem;
+    width: 100%;
+    z-index: 100;           /* fica na frente de qualquer outro elemento */
+}
+
+/* === ESPAÇO ABAIXO DA NAVBAR === */
+/* Adicione essa classe no elemento que vem logo depois da navbar */
+.conteudo {
+    margin-top: 4.5rem;     /* mesmo valor que o height da navbar */
+}
+
+/* === GRUPOS DE ÍCONE + TEXTO === */
+#voltar,
+#inicio,
+#nutricionistas,
+#perfil {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    padding: 0.5rem 0.875rem;
+    border-radius: 999rem;
+    transition: background-color 0.2s;
+}
+
+/* Hover: só aparece quando o mouse passa por cima */
+#voltar:hover,
+#inicio:hover,
+#nutricionistas:hover,
+#perfil:hover {
+    background-color: var(--cor-hover);
+}
+
+/* Pressed: quando clica */
+#voltar:active,
+#inicio:active,
+#nutricionistas:active,
+#perfil:active {
+    background-color: var(--cor-pressed);
+}
+
+#voltar p,
+#inicio p,
+#nutricionistas p,
+#perfil p {
+    margin: 0;
+}
+
+/* === LOGO === */
+.navbar img[alt="Logo"] {
+    background-color: white;
+    border-radius: 1.5rem;
+    padding: 0.5rem 1.5rem;
+    height: 2.5rem;
+}
+
+/* === ÍCONES === */
+.navbar img {
+    width: 1.25rem;
+    height: 1.25rem;
+}

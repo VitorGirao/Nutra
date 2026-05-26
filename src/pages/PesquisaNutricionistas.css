@@ -1,0 +1,84 @@
+body{
+    margin-top: 4.5rem;
+}
+.pesquisa-container{
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: #f5f5f5;
+}
+
+.pesquisa-header{
+  padding: 40px 70px 20px;
+}
+
+.pesquisa-header h1{
+  font-size: 42px;
+  color: #2f2f2f;
+
+  margin-bottom: 10px;
+}
+
+.pesquisa-header h4{
+  color: #6b6b6b;
+
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.pesquisa-filtros{
+  padding: 0 70px;
+}
+
+.barra-area{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pesquisa-info{
+  margin: 30px 70px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #d9d9d9;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pesquisa-info h6{
+  font-size: 15px;
+  color: #666;
+}
+
+.ordenar-btn{
+  border: none;
+
+  background-color: #20c4a7;
+
+  color: white;
+
+  padding: 12px 18px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+}
+
+.cards-grid{
+  padding: 0 70px 60px;
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+
+  gap: 28px;
+}

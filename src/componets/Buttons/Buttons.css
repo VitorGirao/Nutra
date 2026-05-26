@@ -88,3 +88,61 @@
 
   padding: 0;
 }
+
+/* ==========================================
+   ESTILOS DO MENU DROPDOWN DE FILTRO
+   ========================================== */
+
+/* Container que envolve o botão verde para o menu não flutuar desalinhado */
+.filtro-botao-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Caixa principal do menu flutuante */
+.dropdown-filtro-menu {
+  position: absolute;
+  top: 115%; /* Fica logo abaixo do botão verde */
+  right: 0;  /* Alinha perfeitamente pelo canto direito */
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  min-width: 240px;
+  overflow: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Cada opção/botão dentro do menu */
+.dropdown-filtro-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Efeito de passar o mouse em cima das opções comuns */
+.dropdown-filtro-item:hover {
+  background-color: #F9FAFB;
+  color: #111827;
+}
+
+/* Quando a opção for a selecionada atual (Estilo Verde Luxo) */
+.dropdown-filtro-item.ativo {
+  background-color: #E6F7F4; /* Fundo verde bem clarinho */
+  color: #15B392;            /* O mesmo verde original do seu botão */
+  font-weight: 600;
+}
+
+/* Efeito de hover na opção que já está ativa */
+.dropdown-filtro-item.ativo:hover {
+  background-color: #D1F2EC;
+}
