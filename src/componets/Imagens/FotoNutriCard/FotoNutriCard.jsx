@@ -1,5 +1,5 @@
 import "./FotoNutriCard.css";
-import "../../../assets/nutri.jpeg";;
+import "../../../assets/nutri.jpeg";
 
 
 function FotoNutriCard({ foto, nome }) {

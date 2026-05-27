@@ -1,0 +1,31 @@
+.login-section h1 {
+  margin-bottom: 40px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-input.error {
+  border-color: #9333EA;
+  color: #DC2626;
+}
+
+.form-helpers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-top: -8px;
+}
+
+.error-text {
+  color: #DC2626;
+  font-weight: 500;
+}
+
+.forgot-password {
+  color: #000000;
+  text-decoration: none;
+}

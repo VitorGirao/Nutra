@@ -1,0 +1,14 @@
+.cadastro-paciente-form {
+  gap: 10px;
+}
+
+.cadastro-paciente-section h1 {
+  margin-bottom: 20px;
+}
+
+.cadastro-paciente-form .auth-main-button {
+  width: 210px;
+  padding: 11px 24px;
+  font-size: 0.95rem;
+  align-self: center;
+}

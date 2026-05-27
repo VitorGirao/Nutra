@@ -1,0 +1,14 @@
+.cadastro-nutricionista-form {
+  gap: 9px;
+}
+
+.cadastro-nutricionista-section h1 {
+  font-size: 1.9rem;
+}
+
+.cadastro-nutricionista-form .auth-main-button {
+  width: 210px;
+  padding: 11px 24px;
+  font-size: 0.95rem;
+  align-self: center;
+}

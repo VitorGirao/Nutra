@@ -1,0 +1,53 @@
+.recuperar-section h1 {
+  margin-bottom: 28px;
+}
+
+.recuperar-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.form-description {
+  width: 100%;
+  margin: 0 auto 30px auto;
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.btn-cancelar,
+.btn-enviar {
+  flex: 1;
+  padding: 13px;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  color: #1A1A1A;
+  border: 1px solid #15B392;
+}
+
+.btn-enviar {
+  background-color: #15B392;
+  color: white;
+  border: none;
+}
