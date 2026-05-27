@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Adicionado useNavigate
+import './auth.css'; // Importa o CSS base em rem que já está na mesma pasta
 
 export default function Login() {
+  const navigate = useNavigate(); // Ativa o redirecionamento
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erroMensagem, setErroMensagem] = useState('');
@@ -17,15 +18,20 @@ export default function Login() {
     try {
       await new Promise((resolve, reject) => {
         setTimeout(() => {
+          // Validação simulada da sua amiga
           if (email === 'andressa@gmail.com' && senha === '123456') {
             resolve('Login efetuado!');
           } else {
-            reject('Senha incorreta!');
+            reject('E-mail ou senha incorreta!');
           }
         }, 1500);
       });
 
       alert('Login efetuado com sucesso! Bem-vindo.');
+      
+      // REDIRECIONAMENTO COM SUCESSO: Joga o usuário para a lista de nutricionistas!
+      navigate('/pesquisa');
+
     } catch (erro) {
       setErroMensagem(erro);
     } finally {
@@ -36,12 +42,14 @@ export default function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
+        {/* Lado esquerdo: Carrega a imagem do abacaxi automaticamente pelo auth.css */}
         <div className="auth-brand-section"></div>
 
+        {/* Lado direito: Formulário */}
         <div className="auth-form-section login-section">
           <h1>Olá, Seja Bem Vindo!</h1>
 
-          <form className="login-form" onSubmit={handleLogin}>
+          <form className="login-form auth-form" onSubmit={handleLogin}>
             <input
               type="email"
               placeholder="E-mail"
@@ -79,14 +87,14 @@ export default function Login() {
               </span>
             </div>
 
-            <div className="form-helpers">
+            <div className="form-helpers" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginTop: '2px' }}>
               {erroMensagem ? (
-                <span className="error-text">{erroMensagem}</span>
+                <span className="auth-error" style={{ margin: 0 }}>{erroMensagem}</span>
               ) : (
                 <span></span>
               )}
 
-              <Link to="/esqueci-senha" className="forgot-password">
+              <Link to="/esqueci-senha" className="forgot-password" style={{ color: '#666', textDecoration: 'none' }}>
                 Esqueceu a senha?
               </Link>
             </div>
@@ -96,11 +104,12 @@ export default function Login() {
             </button>
           </form>
 
+          {/* Links inferiores ajustados para as rotas que configuramos */}
           <p className="auth-link-text">
-            Ainda não tem conta? <Link to="/cadastro-paciente">Criar</Link>
+            Ainda não tem conta? <Link to="/">Criar</Link>
           </p>
-          <p className="auth-link-text">
-            É nutricionista? <Link to="/cadastro-nutricionista">Criar conta profissional</Link>
+          <p className="auth-link-text" style={{ marginTop: '8px' }}>
+            É nutricionista? <Link to="/CadastroNutricionista">Criar conta profissional</Link>
           </p>
         </div>
       </div>

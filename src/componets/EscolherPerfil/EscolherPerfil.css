@@ -7,10 +7,16 @@ body {
 }
 
 .pagina-escolha-perfil {
-  min-height: 100vh;
+  position: fixed; /* Força a tela a ignorar empurrões de outras margens */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999; /* Garante que ela fique por cima de qualquer espaço fantasma */
   background: #ffffdd;
   font-family: "Roboto", Arial, sans-serif;
   color: #252525;
+  overflow-y: auto; /* Permite scroll se a tela for muito pequena */
 }
 
 .tela-escolha-perfil {
@@ -60,7 +66,7 @@ body {
 
 .opcao-perfil:focus-visible {
   outline: 3px solid rgba(21, 179, 146, 0.35);
-  outline-offset: 10px; /* Mantido em px para precisão do foco */
+  outline-offset: 10px;
   border-radius: 1.125rem; /* 18px */
 }
 
@@ -69,7 +75,7 @@ body {
   height: 13.4375rem; /* 215px */
   border-radius: 1rem; /* 16px */
   background: #15b392;
-  border: 4px solid transparent; /* Mantido px para consistência da borda */
+  border: 4px solid transparent;
   transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -84,7 +90,7 @@ body {
 
 .icone-selecionado {
   position: absolute;
-  top: -10px; /* Mantido px fixo para encaixe perfeito no canto */
+  top: -10px;
   right: -10px;
   width: 2rem; /* 32px */
   height: 2rem; /* 32px */
@@ -115,7 +121,7 @@ body {
   min-width: 10rem; /* 160px */
   height: 2.25rem; /* 36px */
   border: 0;
-  border-radius: 999px; /* Mantido fixo para garantir formato pílula */
+  border-radius: 999px;
   background: #15b392;
   color: white;
   font-size: 1rem; /* 16px */
@@ -141,7 +147,7 @@ body {
   box-shadow: none;
 }
 
-/* Media Queries (Mantidas em px pois são baseadas na largura da tela do dispositivo) */
+/* Media Queries */
 @media (max-width: 760px) {
   .tela-escolha-perfil {
     padding-top: 6rem; /* 96px */
@@ -196,4 +202,23 @@ body {
   .botao-continuar {
     min-width: 8.75rem; /* 140px */
   }
+}
+
+/* ==========================================================
+   NOVO: CONFIGURAÇÃO INFAILÍVEL DAS FRUTAS VIA BACKGROUND
+   ========================================================== */
+.imagem-perfil {
+  background-size: 65% !important; /* Deixa as frutas com o tamanho perfeito dentro do bloco */
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* Injeta o abacaxi na div do Nutricionista */
+.imagem-perfil.nutri-img {
+  background-image: url("../../assets/abacaxis.png") !important;
+}
+
+/* Injeta o caju na div do Paciente */
+.imagem-perfil.paciente-img {
+  background-image: url("../../assets/cajus.png") !important;
 }

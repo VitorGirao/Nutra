@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./EscolherPerfil.css";
 
 export default function EscolhaPerfil({ aoContinuar }) {
@@ -8,7 +9,6 @@ export default function EscolhaPerfil({ aoContinuar }) {
 
   function continuarCadastro() {
     if (!nutricionistaSelecionado) return;
-
     aoContinuar?.();
   }
 
@@ -21,37 +21,37 @@ export default function EscolhaPerfil({ aoContinuar }) {
         <div className="opcoes-perfil">
           <button
             type="button"
-            className={`opcao-perfil ${
-              nutricionistaSelecionado ? "selecionado" : ""
-            }`}
+            className={`opcao-perfil ${nutricionistaSelecionado ? "selecionado" : ""}`}
             onClick={() => setPerfilSelecionado("nutricionista")}
           >
             <span className="icone-selecionado">✓</span>
-            <div className="imagem-perfil"></div>
+            {/* Adicionada a classe nutri-img aqui */}
+            <div className="imagem-perfil nutri-img"></div>
             <span className="nome-perfil">Nutricionista</span>
           </button>
 
           <button
             type="button"
-            className={`opcao-perfil ${
-              perfilSelecionado === "paciente" ? "selecionado" : ""
-            }`}
+            className={`opcao-perfil ${perfilSelecionado === "paciente" ? "selecionado" : ""}`}
             onClick={() => setPerfilSelecionado("paciente")}
           >
             <span className="icone-selecionado">✓</span>
-            <div className="imagem-perfil"></div>
+            {/* Adicionada a classe paciente-img aqui */}
+            <div className="imagem-perfil paciente-img"></div>
             <span className="nome-perfil">Paciente</span>
           </button>
         </div>
 
-        <button
-          type="button"
-          className="botao-continuar"
-          disabled={!nutricionistaSelecionado}
-          onClick={continuarCadastro}
-        >
-          Continuar
-        </button>
+        <Link to="/CadastroNutricionista" style={{ textDecoration: 'none', display: 'inline-block' }}>
+          <button
+            type="button"
+            className="botao-continuar"
+            disabled={!nutricionistaSelecionado}
+            onClick={continuarCadastro}
+          >
+            Continuar
+          </button>
+        </Link>
       </section>
     </main>
   );

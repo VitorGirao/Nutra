@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import FotoNutriCard from "../Imagens/FotoNutriCard/FotoNutriCard";
 import NomeNutricionista from "../Textos/NomeNutricionista";
 import TipoNutricionista from "../Textos/TipoNutricionista";
@@ -17,12 +18,15 @@ function CardNutricionista({ foto, nome, tipo, resumo }) {
         <NomeNutricionista nome={nome} />
         <TipoNutricionista tipo={tipo} />
         <ResumoNutricionista resumo={resumo} />
-        <Buttons
-          label="Ver Perfil"
-          variant="primary"
-          size="small"
-          icon={<ChevronRight size={18} />}
-        />
+        <Link to="/PerfilNutricionistas">
+          <Buttons
+            label="Ver Perfil"
+            variant="primary"
+            size="small"
+            icon={<ChevronRight size={18} />}
+          />
+        </Link>
+
       </div>
     </div>
   );
