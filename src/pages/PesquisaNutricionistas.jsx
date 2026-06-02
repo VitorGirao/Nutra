@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PesquisaNutricionistas.css";
 
 import NavBar from "../componets/NavBar/Navbar";
@@ -6,57 +6,73 @@ import BarraPesquisa from "../componets/BarraPesquisa/BarraPesquisa";
 import Button from "../componets/Buttons/Buttons";
 import CardNutricionista from "../componets/Cards/CardNutricionista";
 
-// Importando o JSON direto
-import dadosJson from "../../public/data/nutricionistas.json"; 
+import db  from "../services/firebase/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 import { ArrowLeft, Home, Users, User } from 'lucide-react';
 import { ChevronDown, Filter } from "lucide-react";
 
+const converterUrlGithub = (url) => {
+  if (!url) return "";
+  return url
+    .replace("https://github.com/", "https://raw.githubusercontent.com/")
+    .replace("/blob/", "/");
+};
+
 function PesquisaNutricionistas() {
-  const nutricionistas = dadosJson.nutricionistas || [];
+  const [nutricionistas, setNutricionistas] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(null);
 
-  // Estados controladores de ordenação e pesquisa por nome
-  const [ordem, setOrdem] = useState("asc"); // 'asc' = A-Z, 'desc' = Z-A
+  useEffect(() => {
+    const buscarNutricionistas = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "nutricionistas"));
+        const lista = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNutricionistas(lista);
+      } catch (error) {
+        console.error("Erro ao buscar nutricionistas:", error);
+        setErro(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    buscarNutricionistas();
+  }, []);
+
+  const [ordem, setOrdem] = useState("asc");
   const [termoPesquisa, setTermoPesquisa] = useState("");
-
-  // Estados do menu dropdown de filtro por especialidade
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
   const [menuFiltroAberto, setMenuFiltroAberto] = useState(false);
 
-  // Função para inverter a ordem (A-Z / Z-A)
   const alternarOrdem = () => {
     setOrdem((ordemAtual) => (ordemAtual === "asc" ? "desc" : "asc"));
   };
 
-  // Abre e fecha o menu de categorias
   const toggleMenuFiltro = () => {
     setMenuFiltroAberto(!menuFiltroAberto);
   };
 
-  // Seleciona a especialidade e fecha o menu automaticamente
   const selecionarTipo = (tipo) => {
     setTipoSelecionado(tipo);
     setMenuFiltroAberto(false);
   };
 
-  // 1. FILTRAGEM COMBINADA: Nome + Especialidade selecionada
   const nutricionistasFiltrados = nutricionistas.filter((nutri) => {
     const bateNoNome = nutri.nome.toLowerCase().includes(termoPesquisa.toLowerCase());
-    const bateNoTipo = tipoSelecionado === "Todos" || nutri.tipoNutricionista === tipoSelecionado;
-    
+    const bateNoTipo = tipoSelecionado === "Todos" || nutri.especialidade === tipoSelecionado;
     return bateNoNome && bateNoTipo;
   });
 
-  // 2. ORDENAÇÃO: Organiza alfabeticamente o resultado dos filtros
   const nutricionistasOrdenados = [...nutricionistasFiltrados].sort((a, b) => {
-    if (ordem === "asc") {
-      return a.nome.localeCompare(b.nome, "pt-BR");
-    } else {
-      return b.nome.localeCompare(a.nome, "pt-BR");
-    }
+    if (ordem === "asc") return a.nome.localeCompare(b.nome, "pt-BR");
+    else return b.nome.localeCompare(a.nome, "pt-BR");
   });
 
-  // Lista de especialidades correspondentes ao seu banco de dados
   const especialidades = [
     "Todos",
     "Nutricionista Clínico",
@@ -80,23 +96,17 @@ function PesquisaNutricionistas() {
 
       <section className="pesquisa-filtros">
         <div className="barra-area">
-          <BarraPesquisa 
+          <BarraPesquisa
             placeholder="Pesquisar por nome..."
             value={termoPesquisa}
             onChange={(e) => setTermoPesquisa(e.target.value)}
           />
-          
-          {/* O SEU BOTÃO VERDE ORIGINAL COM O DROPDOWN LIMPO */}
+
           <div className="filtro-botao-wrapper">
             <div onClick={toggleMenuFiltro}>
-              <Button
-                variant="primary"
-                icon={<Filter size={20} />}
-                iconOnly={true}
-              />
+              <Button variant="primary" icon={<Filter size={20} />} iconOnly={true} />
             </div>
 
-            {/* Menu Dropdown gerenciado inteiramente pelo arquivo CSS da página */}
             {menuFiltroAberto && (
               <div className="dropdown-filtro-menu">
                 {especialidades.map((tipo) => (
@@ -115,33 +125,34 @@ function PesquisaNutricionistas() {
       </section>
 
       <section className="pesquisa-info">
+        {loading && <p>Carregando...</p>}
+        {erro && <p style={{ color: "red" }}>Erro: {erro}</p>}
+
         <h6>
-          {/* Informa dinamicamente a quantidade e onde está filtrando */}
-          {nutricionistasOrdenados.length} Nutricionistas encontrados 
+          {nutricionistasOrdenados.length} Nutricionistas encontrados
           {tipoSelecionado !== "Todos" && ` em ${tipoSelecionado}`}
         </h6>
 
         <button className="ordenar-btn" onClick={alternarOrdem}>
           {ordem === "asc" ? "Ordem Alfabética (A-Z)" : "Ordem Alfabética (Z-A)"}
-          <ChevronDown 
-            size={16} 
-            style={{ 
-              transform: ordem === "desc" ? "rotate(180deg)" : "none", 
-              transition: "transform 0.2s" 
-            }} 
+          <ChevronDown
+            size={16}
+            style={{
+              transform: ordem === "desc" ? "rotate(180deg)" : "none",
+              transition: "transform 0.2s",
+            }}
           />
         </button>
       </section>
 
       <section className="cards-grid">
-        {/* Renderização final limpa e dinâmica */}
         {nutricionistasOrdenados.map((nutri) => (
           <CardNutricionista
             key={nutri.id}
             nome={nutri.nome}
-            tipo={nutri.tipoNutricionista}
-            resumo={nutri.resumo}
-            foto={nutri.foto} 
+            tipo={nutri.especialidade}
+            resumo={nutri.meu_resumo}
+            foto={converterUrlGithub(nutri.foto_do_nutricionista)}
           />
         ))}
       </section>
