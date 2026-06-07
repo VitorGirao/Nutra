@@ -47,12 +47,54 @@ export default function CadastroPaciente() {
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [erroMensagem, setErroMensagem] = useState('');
 
+  // Funções de Máscara e Validação de Entrada
+  const handleTelefoneChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 dígitos numéricos
+
+    // Aplica a formatação (XX) X XXXX-XXXX
+    if (valor.length > 6) {
+      valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+    } else if (valor.length > 2) {
+      valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
+    } else if (valor.length > 0) {
+      valor = `(${valor}`;
+    }
+    
+    setTelefone(valor);
+  };
+
+  const handleCepChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 8) valor = valor.slice(0, 8); // Limita a 8 dígitos numéricos
+
+    // Aplica a formatação XXXXX-XXX
+    if (valor.length > 5) {
+      valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
+    }
+    
+    setCep(valor);
+  };
+
   const handleCadastro = (evento) => {
     evento.preventDefault();
     setErroMensagem('');
 
     if (senha !== confirmarSenha) {
       setErroMensagem('As senhas não coincidem!');
+      return;
+    }
+
+    // Validação extra para os campos que possuem máscara
+    const telefoneLimpo = telefone.replace(/\D/g, '');
+    if (telefoneLimpo && telefoneLimpo.length < 11) {
+      setErroMensagem('Por favor, insira um número de telefone celular válido com DDD.');
+      return;
+    }
+
+    const cepLimpo = cep.replace(/\D/g, '');
+    if (cepLimpo && cepLimpo.length < 8) {
+      setErroMensagem('Por favor, insira um CEP válido.');
       return;
     }
 
@@ -67,7 +109,7 @@ export default function CadastroPaciente() {
         <div className="auth-form-section auth-form-section--compact cadastro-paciente-section">
           <h1>Crie sua conta</h1>
 
-         <form className="auth-form auth-form--compact cadastro-paciente-form"  onSubmit={handleCadastro}>
+          <form className="auth-form auth-form--compact cadastro-paciente-form" onSubmit={handleCadastro}>
             <input
               type="text"
               placeholder="Nome"
@@ -124,10 +166,11 @@ export default function CadastroPaciente() {
 
             <input
               type="tel"
-              placeholder="+55 (00) 00000-0000"
+              placeholder="(00) 90000-0000"
               className="auth-input"
               value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
+              onChange={handleTelefoneChange}
+              maxLength={15}
             />
 
             <input
@@ -135,7 +178,8 @@ export default function CadastroPaciente() {
               placeholder="CEP"
               className="auth-input"
               value={cep}
-              onChange={(e) => setCep(e.target.value)}
+              onChange={handleCepChange}
+              maxLength={9}
             />
 
             <select

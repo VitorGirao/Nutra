@@ -1,87 +1,96 @@
-body{
-    margin-top: 4.5rem;
+/* Remove a margem superior antiga do topo da página */
+body {
+  margin: 0;
+  padding: 0;
 }
-.pesquisa-container{
+
+/* Container pai que organiza a Sidebar + o Conteúdo Principal lado a lado */
+.layout-pagina-wrapper {
+  display: flex;
   width: 100%;
   min-height: 100vh;
-
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; /* Mantém o fundo que você definiu */
 }
 
-.pesquisa-header{
-  padding: 40px 70px 20px;
+/* Nova área de conteúdo deslocada para a direita, evitando que a Sidebar cubra o texto */
+.pesquisa-conteudo-principal {
+  flex-grow: 1;
+  margin-left: 17.5rem; /* Convertido de 280px */
+  min-height: 100vh;
+  box-sizing: border-box;
 }
+
+/* Mantido para cobrir toda a extensão interna da área de conteúdo */
+.pesquisa-container {
+  width: 100%;
+}
+
+/* --- ESTILOS ORIGINAIS CONVERTIDOS PARA REM --- */
+
+.pesquisa-header {
+  /* Convertido de 50px 70px 20px */
+  padding: 3.125rem 4.375rem 1.25rem; 
+}
+
 .opcoes-perfil a, 
 a {
   text-decoration: none !important;
 }
-.pesquisa-header h1{
-  font-size: 42px;
-  color: #2f2f2f;
 
-  margin-bottom: 10px;
+.pesquisa-header h1 {
+  font-size: 2.625rem; /* Convertido de 42px */
+  color: #2f2f2f;
+  margin-top: 0;
+  margin-bottom: 0.625rem; /* Convertido de 10px */
 }
 
-.pesquisa-header h4{
+.pesquisa-header h4 {
   color: #6b6b6b;
-
-  font-size: 18px;
+  font-size: 1.125rem; /* Convertido de 18px */
   font-weight: 400;
 }
 
-.pesquisa-filtros{
-  padding: 0 70px;
+.pesquisa-filtros {
+  padding: 0 4.375rem; /* Convertido de 70px */
 }
 
-.barra-area{
+.barra-area {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem; /* Convertido de 16px */
 }
 
-.pesquisa-info{
-  margin: 30px 70px;
-
-  padding-top: 20px;
-
-  border-top: 1px solid #d9d9d9;
-
+.pesquisa-info {
+  margin: 1.875rem 4.375rem; /* Convertido de 30px 70px */
+  padding-top: 1.25rem; /* Convertido de 20px */
+  border-top: 0.0625rem solid #d9d9d9; /* 1px em rem */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.pesquisa-info h6{
-  font-size: 15px;
+.pesquisa-info h6 {
+  font-size: 0.9375rem; /* Convertido de 15px */
   color: #666;
 }
 
-.ordenar-btn{
+.ordenar-btn {
   border: none;
-
   background-color: #20c4a7;
-
   color: white;
-
-  padding: 12px 18px;
-
-  border-radius: 999px;
-
+  padding: 0.75rem 1.125rem; /* Convertido de 12px 18px */
+  border-radius: 62.4375rem; /* 999px em rem para manter o formato pílula perfeito */
   display: flex;
   align-items: center;
-  gap: 8px;
-
+  gap: 0.5rem; /* Convertido de 8px */
   cursor: pointer;
-
-  font-size: 14px;
+  font-size: 0.875rem; /* Convertido de 14px */
 }
 
-.cards-grid{
-  padding: 0 70px 60px;
-
+.cards-grid {
+  padding: 0 4.375rem 3.75rem; /* Convertido de 0 70px 60px */
   display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-
-  gap: 28px;
+  /* minmax convertido de 240px para 15rem */
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.75rem; /* Convertido de 28px */
 }

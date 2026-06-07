@@ -1,0 +1,19 @@
+.feed-page-container {
+  display: flex;
+  flex-direction: column;
+  
+  /* CORRIGIDO: Alinha os cards à esquerda (perto da SideBar) em vez de centralizar */
+  align-items: flex-start; 
+  
+  gap: 2rem; /* Mantém o espaço vertical entre os cards */
+  
+  /* AJUSTADO: 
+     - 3.125rem (~50px) no topo para alinhar com o começo da SideBar
+     - 4.375rem (~70px) na esquerda para desgrudar suavemente da barra lateral
+     - 3.75rem (~60px) na base
+  */
+  padding: 3.125rem 0 3.75rem 4.375rem; 
+  
+  width: 100%;
+  box-sizing: border-box;
+}

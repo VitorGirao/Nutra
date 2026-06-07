@@ -1,0 +1,122 @@
+/* Container principal da Sidebar */
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  height: 100vh;
+  background-color: #15B392;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* Área reservada para a logo */
+.sidebar-logo-area {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  margin-bottom: 32px;
+}
+
+.sidebar-logo-placeholder {
+  color: #FFFFFF;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+}
+
+.sidebar-logo-area img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Container dos links centrais */
+.sidebar-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+/* --- BLOCO DO RODAPÉ (PERFIL INFERIOR) --- */
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-profile-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-user-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.sidebar-username {
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.sidebar-user-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sidebar-more-icon {
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-profile-card:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Caso o perfil inferior esteja selecionado como ativo */
+.sidebar-profile-card--active {
+  background-color: #FFFFFF;
+}
+
+.sidebar-profile-card--active .sidebar-username,
+.sidebar-profile-card--active .sidebar-more-icon {
+  color: #15B392;
+}
+
+.sidebar-profile-card--active .sidebar-user-sub {
+  color: rgba(21, 179, 146, 0.8);
+}
+
+.sidebar-profile-card--active:hover {
+  background-color: #f2f2f2;
+}

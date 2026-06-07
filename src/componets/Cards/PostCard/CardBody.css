@@ -1,0 +1,28 @@
+.card-body-comp {
+  padding: 1.25rem 1.25rem 0.75rem;
+  text-align: left;
+}
+
+.card-body-comp__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2f2f2f;
+  margin: 0 0 0.375rem 0;
+}
+
+.card-body-comp__subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6b6b6b;
+  margin: 0 0 1rem 0;
+}
+
+.card-body-comp__excerpt {
+  font-size: 0.9375rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

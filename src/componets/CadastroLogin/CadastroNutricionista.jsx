@@ -33,12 +33,60 @@ export default function CadastroNutricionista() {
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [erroMensagem, setErroMensagem] = useState('');
 
+  // Funções de Máscara e Validação
+  const handleTelefoneChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 dígitos
+
+    // Aplica a formatação (XX) X XXXX-XXXX
+    if (valor.length > 6) {
+      valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+    } else if (valor.length > 2) {
+      valor = `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
+    } else if (valor.length > 0) {
+      valor = `(${valor}`;
+    }
+    
+    setTelefone(valor);
+  };
+
+  const handleCepChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 8) valor = valor.slice(0, 8); // Limita a 8 dígitos
+
+    // Aplica a formatação XXXXX-XXX
+    if (valor.length > 5) {
+      valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
+    }
+    
+    setCep(valor);
+  };
+
+  const handleCrnChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, ''); // Garante apenas números no CRN
+    if (valor.length > 8) valor = valor.slice(0, 8); // Limita o tamanho (ajuste se necessário)
+    setCrn(valor);
+  };
+
   const handleCadastro = (evento) => {
     evento.preventDefault();
     setErroMensagem('');
 
     if (senha !== confirmarSenha) {
       setErroMensagem('As senhas não coincidem!');
+      return;
+    }
+
+    // Validação extra opcional para garantir que os campos mascarados estão completos
+    const telefoneLimpo = telefone.replace(/\D/g, '');
+    if (telefoneLimpo && telefoneLimpo.length < 10) {
+      setErroMensagem('Por favor, insira um telefone válido.');
+      return;
+    }
+
+    const cepLimpo = cep.replace(/\D/g, '');
+    if (cepLimpo && cepLimpo.length < 8) {
+      setErroMensagem('Por favor, insira um CEP válido.');
       return;
     }
 
@@ -74,13 +122,12 @@ export default function CadastroNutricionista() {
                 </span>
               </div>
 
-              <input type="text" placeholder="CRN" className="auth-input" value={crn} onChange={(e) => setCrn(e.target.value)} required />
+              <input type="text" placeholder="CRN (Apenas números)" className="auth-input" value={crn} onChange={handleCrnChange} required />
               
-              <input type="text" placeholder="CEP" className="auth-input" value={cep} onChange={(e) => setCep(e.target.value)} />
+              <input type="text" placeholder="CEP" className="auth-input" value={cep} onChange={handleCepChange} maxLength={9} />
               
-              <input type="tel" placeholder="+55 (00) 00000-0000" className="auth-input" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+              <input type="tel" placeholder="(00) 90000-0000" className="auth-input" value={telefone} onChange={handleTelefoneChange} maxLength={15} />
 
-              {/* CORRIGIDO: Tag select fechada e estruturada perfeitamente */}
               <select className="auth-input" value={genero} onChange={(e) => setGenero(e.target.value)} required>
                 <option value="" disabled>Gênero</option>
                 <option value="feminino">Feminino</option>
