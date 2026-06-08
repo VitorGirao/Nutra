@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './SideBar.css';
+import SideBarButton from '../Buttons/SideBarButton';
 
-// IMPORTAÇÃO CORRETA: Apontando exatamente para a grafia física do seu botão
-import SideBarButton from '../Buttons/SideBarButton'; 
-
-// Componentes de Ícones em SVG nativos para não precisar instalar bibliotecas externas
 function HomeIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -14,7 +12,6 @@ function HomeIcon() {
   );
 }
 
-// Ícone representando Nutricionistas / Especialistas médicos
 function NutritionistIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -26,7 +23,6 @@ function NutritionistIcon() {
   );
 }
 
-// NOVO: Ícone de bandeira/marcador representando itens "Salvos"
 function SavedIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,7 +31,6 @@ function SavedIcon() {
   );
 }
 
-// Ícone de três pontinhos para o menu do perfil inferior
 function MoreIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,45 +41,42 @@ function MoreIcon() {
   );
 }
 
-// Componente Principal da Barra Lateral
 function SideBar() {
-  const [abaAtiva, setAbaAtiva] = useState('inicio');
+  const navigate = useNavigate();
+  const location = useLocation(); // pega a rota atual
+  const rota = location.pathname;  // ex: '/feed', '/pesquisa'
 
   return (
     <aside className="sidebar-container">
-      {/* Topo: Espaço reservado para colocar a tag <img> da Logo futuramente */}
       <div className="sidebar-logo-area">
         <span className="sidebar-logo-placeholder">Nutra</span>
       </div>
 
-      {/* Meio: Grupo de botões principais de navegação */}
       <nav className="sidebar-nav-links">
         <SideBarButton 
           Icon={HomeIcon} 
           label="Início" 
-          active={abaAtiva === 'inicio'} 
-          onClick={() => setAbaAtiva('inicio')} 
+          active={rota === '/feed'}
+          onClick={() => navigate('/feed')} 
         />
         <SideBarButton 
           Icon={NutritionistIcon} 
           label="Nutricionistas" 
-          active={abaAtiva === 'nutricionistas'} 
-          onClick={() => setAbaAtiva('nutricionistas')} 
+          active={rota === '/pesquisa'}
+          onClick={() => navigate('/pesquisa')} 
         />
-        {/* ADICIONADO: Novo botão de itens Salvos */}
         <SideBarButton 
           Icon={SavedIcon} 
           label="Salvos" 
-          active={abaAtiva === 'salvos'} 
-          onClick={() => setAbaAtiva('salvos')} 
+          active={rota === '/salvos'}
+          onClick={() => navigate('/salvos')} 
         />
       </nav>
 
-      {/* Rodapé: Botão de Perfil fixado na parte inferior */}
       <div className="sidebar-footer">
         <button 
-          className={`sidebar-profile-card ${abaAtiva === 'perfil' ? 'sidebar-profile-card--active' : ''}`}
-          onClick={() => setAbaAtiva('perfil')}
+          className={`sidebar-profile-card ${rota === '/perfil' ? 'sidebar-profile-card--active' : ''}`}
+          onClick={() => navigate('/perfil')}
         >
           <div className="sidebar-profile-info">
             <img 
