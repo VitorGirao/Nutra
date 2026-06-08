@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PesquisaNutricionistas.css";
 
-// Trocado de NavBar para Sidebar
-import SideBar from "../componets/NavBar/SideBar"; 
+import SideBar from "../componets/NavBar/SideBar";
 import BarraPesquisa from "../componets/BarraPesquisa/BarraPesquisa";
 import Button from "../componets/Buttons/Buttons";
 import CardNutricionista from "../componets/Cards/CardNutricionista";
@@ -62,7 +61,7 @@ function PesquisaNutricionistas() {
     setMenuFiltroAberto(false);
   };
 
-  const nutricionistasFiltrados = Array.isArray(nutricionistas) 
+  const nutricionistasFiltrados = Array.isArray(nutricionistas)
     ? nutricionistas.filter((nutri) => {
         const bateNoNome = nutri.nome?.toLowerCase().includes(termoPesquisa.toLowerCase()) || false;
         const bateNoTipo = tipoSelecionado === "Todos" || nutri.especialidade === tipoSelecionado;
@@ -88,12 +87,9 @@ function PesquisaNutricionistas() {
   ];
 
   return (
-    // Container com classe de layout para organizar a Sidebar + Conteúdo Principal
     <div className="layout-pagina-wrapper">
-      {/* Nova Sidebar Fixa na Esquerda */}
       <SideBar />
 
-      {/* Área da página deslocada para a direita */}
       <main className="pesquisa-conteudo-principal">
         <section className="pesquisa-header">
           <h1>Encontre o nutricionista Ideal para você</h1>
@@ -155,6 +151,7 @@ function PesquisaNutricionistas() {
           {nutricionistasOrdenados.map((nutri) => (
             <CardNutricionista
               key={nutri.id}
+              nutricionista={nutri}
               nome={nutri.nome}
               tipo={nutri.especialidade}
               resumo={nutri.meu_resumo}

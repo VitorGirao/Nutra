@@ -5,11 +5,10 @@ import NomeNutricionista from "../Textos/NomeNutricionista";
 import TipoNutricionista from "../Textos/TipoNutricionista";
 import ResumoNutricionista from "../Textos/ResumoNutricionista";
 import Buttons from '../Buttons/Buttons';
-import { ChevronDown, ChevronRight, User, Filter } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import "./CardNutricionista.css";
 
-
-function CardNutricionista({ foto, nome, tipo, resumo }) {
+function CardNutricionista({ foto, nome, tipo, resumo, nutricionista }) {
   return (
     <div className="card-nutri">
       <FotoNutriCard foto={foto} nome={nome} />
@@ -18,7 +17,8 @@ function CardNutricionista({ foto, nome, tipo, resumo }) {
         <NomeNutricionista nome={nome} />
         <TipoNutricionista tipo={tipo} />
         <ResumoNutricionista resumo={resumo} />
-        <Link to="/PerfilNutricionistas">
+
+        <Link to="/PerfilNutricionistas" state={{ nutricionista }}>
           <Buttons
             label="Ver Perfil"
             variant="primary"
@@ -26,7 +26,6 @@ function CardNutricionista({ foto, nome, tipo, resumo }) {
             icon={<ChevronRight size={18} />}
           />
         </Link>
-
       </div>
     </div>
   );
