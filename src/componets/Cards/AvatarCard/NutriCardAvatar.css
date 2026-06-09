@@ -1,0 +1,106 @@
+/* ==========================================================
+   Container Principal do Card
+   ========================================================== */
+.nutritionist-card {
+  width: 380px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #eaeaea;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho do Card */
+.card-header {
+  padding: 20px 20px 8px 20px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.card-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #777777;
+}
+
+/* Container da lista interna */
+.card-list {
+  padding: 0 20px;
+}
+
+/* Linha divisória antes do rodapé */
+.card-divider {
+  border: 0;
+  border-top: 1px solid #eaeaea;
+  margin: 12px 0 0 0;
+}
+
+/* Wrapper para o botão de rodapé ter um espaçamento legal */
+.card-footer {
+  padding: 8px 12px;
+}
+
+/* Conteúdo interno da label do "Ver todos" */
+.footer-label-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* ==========================================================
+   Estilos do ProfessionalRow (Linha do Nutricionista)
+   ========================================================== */
+.professional-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 0;
+  border-bottom: 1px solid #eaeaea; /* Adiciona uma linha divisória sutil entre as linhas */
+}
+
+/* Remove a linha divisória do último nutricionista para não ficar duplo com o footer */
+.professional-row:last-child {
+  border-bottom: none;
+}
+
+.professional-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1; /* Permite que os textos usem o espaço necessário antes do botão */
+}
+
+/* CORRIGIDO: Seletor direto para a imagem do avatar */
+.prof-avatar-card {
+  width: 48px !important; /* Tamanho intermediário e ideal para o card */
+  height: 48px !important;
+  min-width: 48px; /* Impede o flexbox de esmagar a foto em telas menores */
+  border-radius: 50% !important; /* Força a imagem a ficar 100% redonda */
+  object-fit: cover !important; /* Impede a foto de ficar esticada ou distorcida */
+}
+
+.text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.professional-name {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 16px;
+  white-space: nowrap; /* Evita que o nome quebre em duas linhas */
+}
+
+.professional-role {
+  color: #666666;
+  font-size: 14px;
+}

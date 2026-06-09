@@ -1,19 +1,140 @@
+/* ==========================================================================
+   CONTAINER GERAL (Ajustado para alinhar perfeitamente o topo de ambos)
+   ========================================================================== */
+.conteudo-duas-colunas {
+  display: flex;
+  flex-direction: row;
+  gap: 40px; /* Um espaço confortável entre o feed e o card */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  /* Ajustamos o padding aqui: 
+     50px no topo (para alinhar com o começo da SideBar) e 70px na esquerda */
+  padding: 3.125rem 24px 3.75rem 4.375rem; 
+  box-sizing: border-box;
+  align-items: flex-start; /* Garante o alinhamento cirúrgico no topo */
+}
+
+/* ==========================================================================
+   COLUNA DO FEED (Esquerda)
+   ========================================================================== */
+.coluna-feed {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* Espaço entre o Header e o primeiro PostCard */
+}
+
+/* O Header agora herda o alinhamento perfeito do topo */
+.pesquisa-header {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.header-flex-title {
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start;        
+  width: 100%;                    
+}
+
+.header-flex-title h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o nome da Maria e o emoji */
+}
+
+.header-flex-title h4 {
+  font-size: 16px;
+  color: #666666;
+  margin: 6px 0 0 0;
+  font-weight: 400;
+}
+
+/* Container que lista os posts */
 .feed-page-container {
   display: flex;
   flex-direction: column;
-  
-  /* CORRIGIDO: Alinha os cards à esquerda (perto da SideBar) em vez de centralizar */
   align-items: flex-start; 
-  
-  gap: 2rem; /* Mantém o espaço vertical entre os cards */
-  
-  /* AJUSTADO: 
-     - 3.125rem (~50px) no topo para alinhar com o começo da SideBar
-     - 4.375rem (~70px) na esquerda para desgrudar suavemente da barra lateral
-     - 3.75rem (~60px) na base
-  */
-  padding: 3.125rem 0 3.75rem 4.375rem; 
-  
+  gap: 2rem; 
   width: 100%;
+  
+  /* CORRIGIDO: Zeramos o padding superior e esquerdo que estavam 
+     desalinhando o feed em relação ao título */
+  padding: 0; 
   box-sizing: border-box;
+}
+
+/* ==========================================================================
+   COLUNA DO CARD (Direita)
+   ========================================================================== */
+.coluna-widgets {
+  width: 380px; 
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Botão Verde de Criar Publicação */
+.btn-criar-publicacao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #00b493; 
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-criar-publicacao:hover {
+  background-color: #00967a;
+}
+
+.footer-links-institucional {
+  padding: 0 4px;
+  font-size: 12px;
+  color: #999999;
+  line-height: 1.6;
+}
+
+.footer-links-institucional nav {
+  margin-bottom: 6px;
+}
+
+.footer-links-institucional a {
+  color: #888888;
+  text-decoration: none;
+}
+
+.footer-links-institucional a:hover {
+  text-decoration: underline;
+}
+
+.pesquisa-conteudo-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Força as colunas a ignorarem qualquer margem padrão do navegador */
+.conteudo-duas-colunas {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3.125rem 24px 3.75rem 4.375rem; 
+    box-sizing: border-box;
+    align-items: flex-start; /* Isso alinha o topo do H1 com o topo do Card perfeitamente */
 }

@@ -1,9 +1,19 @@
 import React from 'react';
-import SideBar from '../componets/NavBar/SideBar'; // IMPORTANTE: Puxando a sua barra lateral
+import SideBar from '../componets/NavBar/SideBar'; 
 import PostCard from '../componets/Cards/PostCard/PostCard';
+import Button from '../componets/Buttons/Buttons';
+import { NutritionistCard } from '../componets/Cards/AvatarCard/NutritionistCard'; 
 import './Feed.css';
 
 function Feed() {
+    // Ícone de "Soma/Plus" profissional em SVG
+    const PlusIcon = (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+    );
+
     const listaPostagens = [
         {
             id: 1,
@@ -28,31 +38,51 @@ function Feed() {
     ];
 
     return (
-        /* 1. Wrapper principal que alinha a SideBar fixa na esquerda e o conteúdo na direita */
         <div className="layout-pagina-wrapper">
-
-            {/* 2. Renderiza a barra lateral na esquerda */}
             <SideBar />
 
-            {/* 3. Área de conteúdo principal empurrada para a direita (margin-left) para não ser coberta */}
             <main className="pesquisa-conteudo-principal">
-                <section className="pesquisa-header">
-                    <h1>Bem Vindo de volta, Maria</h1>
-                    <h4>Confira o que temos hoje para você</h4>
-                </section>
-                <div className="feed-page-container">
-                    {listaPostagens.map((post) => (
-                        <PostCard
-                            key={post.id}
-                            post={post}
-                            onLerMais={() => console.log(`Abrindo a publicação ${post.id}`)}
-                            onSalvar={() => console.log(`Salvou a publicação ${post.id}`)}
-                            onOpcoes={() => console.log(`Abriu opções da publicação ${post.id}`)}
-                        />
-                    ))}
+                <div className="conteudo-duas-colunas">
+                    
+                    <div className="coluna-feed">
+                        <section className="pesquisa-header">
+                            <div className="header-flex-title">
+                                <div>
+                                    <h1>Bem-vindo de volta, Maria!</h1>
+                                    <h4>Confira suas leituras para hoje</h4>
+                                </div>
+                                
+                                {/* USANDO O SEU COMPONENTE BUTTON AQUI */}
+                                <Button 
+                                    variant="primary" 
+                                    size="medium"
+                                    onClick={() => console.log("Criar publicação")}
+                                    label={
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            {PlusIcon}
+                                            Criar card
+                                        </div>
+                                    }
+                                />
+                            </div>
+                        </section>
+
+                        <div className="feed-page-container">
+                            {listaPostagens.map((post) => (
+                                <PostCard
+                                    key={post.id}
+                                    post={post}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <aside className="coluna-widgets">
+                        <NutritionistCard />
+                    </aside>
+
                 </div>
             </main>
-
         </div>
     );
 }
