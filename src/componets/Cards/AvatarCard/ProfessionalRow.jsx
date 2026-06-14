@@ -1,14 +1,16 @@
+// ProfessionalRow.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import Button from '../../Buttons/Buttons';
 import './NutriCardAvatar.css';
 
-// Criando o componente Avatar aqui em cima para o React saber o que ele significa
+// Componente Avatar mantido no topo como no seu original
 function Avatar({ src, alt, className }) {
     return <img src={src} alt={alt} className={className} />;
 }
 
-export function ProfessionalRow({ name, role, imageSrc }) {
-    const [following, setFollowing] = React.useState(false);
+export function ProfessionalRow({ nutricionista, name, role, imageSrc }) {
+    const navigate = useNavigate();
 
     return (
         <div className="professional-row">
@@ -25,8 +27,11 @@ export function ProfessionalRow({ name, role, imageSrc }) {
                 variant="secondary"
                 size="small"
                 label={"Ver Perfil"}
-                onClick={() => setFollowing(!following)}
+                // 🌟 CORREÇÃO AQUI: Mudado para '/PerfilNutricionistas' para bater com o card grande!
+                onClick={() => navigate('/PerfilNutricionistas', { state: { nutricionista } })} 
             />
         </div>
     );
 }
+
+export default ProfessionalRow;

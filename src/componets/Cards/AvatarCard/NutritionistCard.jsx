@@ -1,44 +1,56 @@
 // NutritionistCard.jsx
-import { useNavigate } from 'react-router-dom'; // 1. Importa o hook de navegação
-import { ProfessionalRow } from './ProfessionalRow';
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Para o botão "Ver todos"
+import { ProfessionalRow } from './ProfessionalRow'; // Importa a linha de cada profissional
 import Button from '../../Buttons/Buttons'; // Seu botão customizado
 
-const nutritionistsData = [
-  { id: 1, name: 'Nayara Loranne', role: 'Nutricionista', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop' },
-  { id: 2, name: 'Rafael Oliveira', role: 'Nutricionista', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop' },
-  { id: 3, name: 'Juliana Mendes', role: 'Nutricionista', image: 'https://images.unsplash.com/photo-1582750433449-64c024716c17?w=150&h=150&fit=crop' },
-];
+// Função para tratar fotos hospedadas no GitHub (vinda da sua tela de pesquisa)
+const converterUrlGithub = (url) => {
+  if (!url) return "";
+  return url
+    .replace("https://github.com/", "https://raw.githubusercontent.com/")
+    .replace("/blob/", "/");
+};
 
-export function NutritionistCard() {
-  const navigate = useNavigate(); // 2. Inicializa o navegador do React Router
+// Recebe a lista sorteada e o estado de loading vindos do Feed.js
+export function NutritionistCard({ nutricionistas, loading }) {
+  const navigate = useNavigate(); 
 
   return (
     <div className="nutritionist-card">
       
+      {/* Cabeçalho fixo do Card */}
       <div className="card-header">
         <h3 className="card-title">Nutricionistas para seguir</h3>
         <p className="card-subtitle">Conecte-se com outros profissionais</p>
       </div>
 
+      {/* Lista que renderiza as linhas dos profissionais */}
       <div className="card-list">
-        {nutritionistsData.map((nutri) => (
-          <ProfessionalRow 
-            key={nutri.id}
-            name={nutri.name}
-            role={nutri.role}
-            imageSrc={nutri.image}
-          />
-        ))}
+        {loading ? (
+          <p style={{ padding: '16px', fontSize: '14px', color: '#666' }}>Carregando profissionais...</p>
+        ) : (
+          // Mapeia os 3 nutricionistas vindos do Firebase
+          nutricionistas.map((nutri) => (
+            <ProfessionalRow 
+              key={nutri.id}
+              nutricionista={nutri} // 🌟 Passando o objeto completo para o ProfessionalRow conseguir enviar via state
+              name={nutri.nome}
+              role={nutri.especialidade || 'Nutricionista'}
+              imageSrc={converterUrlGithub(nutri.foto_do_nutricionista)}
+            />
+          ))
+        )}
       </div>
 
       <hr className="card-divider" />
 
+      {/* Rodapé fixo com o botão de Ver Todos */}
       <div className="card-footer">
         <Button 
           variant="ghost" 
           size="medium"
-          // 3. Redireciona o usuário para a rota "/pesquisa" ao clicar
-          onClick={() => navigate('/pesquisa')} 
+          onClick={() => navigate('/pesquisa')} // Redireciona para a tela de busca principal
           label={
             <div className="footer-label-content">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -57,3 +69,6 @@ export function NutritionistCard() {
     </div>
   );
 }
+
+// Exportação padrão correta para este arquivo
+export default NutritionistCard;

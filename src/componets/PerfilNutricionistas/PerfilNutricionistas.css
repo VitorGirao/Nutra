@@ -17,6 +17,7 @@
   --text-role: #454343;
   --text-body: #000000;
   --sidebar-width: 17.5rem;
+  --border-box: #e2e8f0; 
 }
 
 /* ── Layout wrapper com sidebar ── */
@@ -34,31 +35,31 @@
   min-height: 100vh;
   padding: 2rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
 }
 
-/* ── Card branco ── */
+/* ── Card branco principal ── */
 .container {
   width: 100%;
   max-width: 62.5rem;
   margin: 1.75rem auto;
   background: var(--white);
-  border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   display: grid;
-  grid-template-columns: 22rem 1fr;
-  gap: 2.5rem;
-  padding: 4rem;
-  align-items: start;
+  grid-template-columns: 24rem 1fr;
+  gap: 2rem;
+  padding: 2.5rem;
+  align-items: stretch;
 }
 
-/* ── Foto ── */
+/* ── Container da Foto ── */
 .img-nutricionista {
   width: 100%;
-  border-radius: 0.75rem;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid var(--border-box);
 }
 
 .img-nutricionista img {
@@ -69,44 +70,58 @@
   display: block;
 }
 
-/* ── Infos ── */
+/* ── Coluna de Informações do Lado Direito ── */
 .infos-nutricionista {
   display: flex;
   flex-direction: column;
-  gap: 1.125rem;
+  gap: 1rem;
+}
+
+/* ── Estilização da Blocagem Clean ── */
+.box-perfil {
+  border: 1px solid var(--border-box);
+  border-radius: 8px;
+  padding: 1.25rem;
+  background-color: #fafafa;
 }
 
 .infos-nutricionista h2 {
-  font-size: 2.625rem;
-  line-height: 3.25rem;
-  font-weight: 400;
-  color: var(--text);
-  letter-spacing: -0.015625rem;
-}
-
-.infos-nutricionista h4 {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 400;
-  color: var(--text-role);
-  margin-top: -0.625rem;
-}
-
-.infos-nutricionista h3 {
-  font-size: 1.625rem;
-  line-height: 2.125rem;
-  font-weight: 400;
+  font-size: 1.75rem;
+  font-weight: 500;
   color: var(--text);
   margin-bottom: 0.25rem;
 }
 
+.infos-nutricionista h4 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-role);
+}
+
+.infos-nutricionista h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin-bottom: 0.5rem;
+}
+
 .infos-nutricionista p {
-  font-size: 0.875rem;
-  line-height: 1.7;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--text-body);
 }
 
-/* ── Botão ── */
+.contato-linhas p {
+  margin-bottom: 0.4rem;
+}
+
+.contato-linhas p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Estilo do Botão Mantido Rigorosamente Original ── */
 .infos-nutricionista button {
   align-self: flex-start;
   background: var(--green);
@@ -128,6 +143,11 @@
   transform: translateY(-0.0625rem);
 }
 
+.link-agendamento {
+  align-self: flex-end; 
+  text-decoration: none;
+}
+
 /* ── Imagem de fundo ── */
 .forma-fundo {
   position: fixed;
@@ -140,16 +160,15 @@
   pointer-events: none;
 }
 
-/* ── Tablet ── */
+/* ── Responsive Tablet ── */
 @media (max-width: 64rem) {
   .container {
-    grid-template-columns: 16rem 1fr;
-    gap: 2rem;
-    padding: 2.5rem;
+    grid-template-columns: 18rem 1fr;
+    padding: 1.75rem;
   }
 }
 
-/* ── Mobile ── */
+/* ── Responsive Mobile ── */
 @media (max-width: 48rem) {
   .perfil-conteudo-principal {
     margin-left: 0;
@@ -158,26 +177,11 @@
 
   .container {
     grid-template-columns: 1fr;
-    padding: 1.5rem;
-    border-radius: 1.5rem;
-    gap: 1.5rem;
-    margin: 1rem auto;
+    padding: 1.25rem;
+    gap: 1.25rem;
   }
 
   .img-nutricionista {
-    height: 20rem;
-  }
-
-  .infos-nutricionista h2 {
-    font-size: 1.75rem;
-    line-height: 2.25rem;
-  }
-
-  .infos-nutricionista h4 {
-    font-size: 1rem;
-  }
-
-  .infos-nutricionista h3 {
-    font-size: 1.25rem;
+    height: 22rem;
   }
 }

@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SideBar from '../componets/NavBar/SideBar'; 
 import PostCard from '../componets/Cards/PostCard/PostCard';
 import Button from '../componets/Buttons/Buttons';
-import { NutritionistCard } from '../componets/Cards/AvatarCard/NutritionistCard'; 
+import NutritionistCard from '../componets/Cards/AvatarCard/NutritionistCard'; 
 import './Feed.css';
 
+// Importações do Firestore e da sua configuração do Firebase
+import db from "../services/firebase/firebase";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+
 function Feed() {
-    // Ícone de "Soma/Plus" profissional em SVG
+    const [listaPostagens, setListaPostagens] = useState([]);
+    const [loadingFeed, setLoadingFeed] = useState(true);
+    const [nutricionistasAleatorios, setNutricionistasAleatorios] = useState([]);
+    const [loadingNutris, setLoadingNutris] = useState(true);
+
+    // Ícone de "Soma/Plus" profissional em SVG para o botão de criar card
     const PlusIcon = (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -14,28 +23,100 @@ function Feed() {
         </svg>
     );
 
-    const listaPostagens = [
-        {
-            id: 1,
-            autorNome: "Maria João",
-            autorSub: "Nutricionista",
-            autorFoto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
-            postImagem: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&fit=crop",
-            titulo: "Segredos da Alimentação",
-            subtitulo: "Como realmente seguir sua dieta",
-            resumo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-            id: 2,
-            autorNome: "Maria João",
-            autorSub: "Nutricionista",
-            autorFoto: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
-            postImagem: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&fit=crop",
-            titulo: "Proteínas Vegetais: aliadas da saúde",
-            subtitulo: "Descubra os melhores alimentos e como incluir no seu dia a dia",
-            resumo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        }
-    ];
+    // ==========================================================================
+    // FETCH DO FEED (Buscando os posts e os respectivos dados dos autores)
+    // ==========================================================================
+    useEffect(() => {
+        const carregarFeedCompleto = async () => {
+            try {
+                // 1. Busca todas as postagens da coleção correta "posts"
+                const snapshotPosts = await getDocs(collection(db, "posts"));
+                const postsDoBanco = snapshotPosts.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                // 2. Para cada post, faz um fetch secundário usando o id_nutricionista
+                const postsComAutores = await Promise.all(
+                    postsDoBanco.map(async (post) => {
+                        if (post.id_nutricionista) {
+                            try {
+                                const docNutri = doc(db, "nutricionistas", post.id_nutricionista);
+                                const snapshotNutri = await getDoc(docNutri);
+                                
+                                if (snapshotNutri.exists()) {
+                                    // Injeta com sucesso os dados do autor dentro do objeto do post
+                                    return {
+                                        ...post,
+                                        autor: snapshotNutri.data()
+                                    };
+                                }
+                            } catch (err) {
+                                console.error(`Erro ao buscar autor do post ${post.id}:`, err);
+                            }
+                        }
+                        // Fallback de segurança caso o nutricionista não seja encontrado ou excluído
+                        return {
+                            ...post,
+                            autor: { nome: "Nutricionista do Sistema", foto: "", especialidade: "Nutrição" }
+                        };
+                    })
+                );
+
+                setListaPostagens(postsComAutores);
+            } catch (error) {
+                console.error("Erro ao carregar o feed de postagens:", error);
+            } finally {
+                setLoadingFeed(false);
+            }
+        };
+
+        carregarFeedCompleto();
+    }, []);
+
+    // ==========================================================================
+    // FETCH DO WIDGET LATERAL (Busca todos os nutris e sorteia 3 para exibição)
+    // ==========================================================================
+    useEffect(() => {
+        const buscarESortearNutricionistas = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, "nutricionistas"));
+                const listaCompleta = snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                // Embaralha o array de forma simples e extrai os 3 primeiros
+                const sorteados = listaCompleta
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+
+                setNutricionistasAleatorios(sorteados);
+            } catch (error) {
+                console.error("Erro ao buscar nutricionistas para o widget lateral:", error);
+            } finally {
+                setLoadingNutris(false);
+            }
+        };
+
+        buscarESortearNutricionistas();
+    }, []);
+
+    // ==========================================================================
+    // HANDLERS DAS AÇÕES DOS CARDS
+    // ==========================================================================
+    const handleLerMais = (post) => {
+        console.log("Abrindo postagem completa:", post);
+        // Aqui futuramente você pode colocar o navigate(`/post/${post.id}`, { state: { post } })
+    };
+
+    const handleSalvar = (id) => {
+        console.log("Salvar post com ID:", id);
+    };
+
+    const handleOpcoes = (id) => {
+        console.log("Opções do post com ID:", id);
+    };
 
     return (
         <div className="layout-pagina-wrapper">
@@ -44,6 +125,7 @@ function Feed() {
             <main className="pesquisa-conteudo-principal">
                 <div className="conteudo-duas-colunas">
                     
+                    {/* COLUNA ESQUERDA: FEED */}
                     <div className="coluna-feed">
                         <section className="pesquisa-header">
                             <div className="header-flex-title">
@@ -52,7 +134,6 @@ function Feed() {
                                     <h4>Confira suas leituras para hoje</h4>
                                 </div>
                                 
-                                {/* USANDO O SEU COMPONENTE BUTTON AQUI */}
                                 <Button 
                                     variant="primary" 
                                     size="medium"
@@ -68,17 +149,30 @@ function Feed() {
                         </section>
 
                         <div className="feed-page-container">
-                            {listaPostagens.map((post) => (
-                                <PostCard
-                                    key={post.id}
-                                    post={post}
-                                />
-                            ))}
+                            {loadingFeed ? (
+                                <p>Carregando postagens...</p>
+                            ) : listaPostagens.length === 0 ? (
+                                <p>Nenhuma publicação encontrada no momento.</p>
+                            ) : (
+                                listaPostagens.map((post) => (
+                                    <PostCard
+                                        key={post.id}
+                                        post={post}
+                                        onLerMais={handleLerMais}
+                                        onSalvar={handleSalvar}
+                                        onOpcoes={handleOpcoes}
+                                    />
+                                ))
+                            )}
                         </div>
                     </div>
 
+                    {/* COLUNA DIREITA: WIDGET LATERAL */}
                     <aside className="coluna-widgets">
-                        <NutritionistCard />
+                        <NutritionistCard 
+                            nutricionistas={nutricionistasAleatorios} 
+                            loading={loadingNutris} 
+                        />
                     </aside>
 
                 </div>

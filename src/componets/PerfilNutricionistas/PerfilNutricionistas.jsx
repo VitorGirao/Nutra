@@ -41,6 +41,8 @@ const PerfilNutricionista = () => {
 
       <div className="perfil-conteudo-principal">
         <div className="container">
+          
+          {/* Lado esquerdo: Imagem */}
           <div className="img-nutricionista">
             <img
               src={converterUrlGithub(foto_do_nutricionista)}
@@ -48,18 +50,36 @@ const PerfilNutricionista = () => {
             />
           </div>
 
+          {/* Lado direito: Informações Blocadas */}
           <div className="infos-nutricionista">
-            <h2>{nome}</h2>
-            <h4>{especialidade}</h4>
-            <h3>Sobre</h3>
-            <p>{meu_resumo}</p>
-            <h3>Contato</h3>
-            <p>Telefone: {numero}</p>
-            <p>Email: {email}</p>
-            <p>CRN: {crn}</p>
-            <a href={formatarWhatsapp(numero)} target="_blank" rel="noopener noreferrer">
-              <Buttons label="Agendar Consulta" variant="primary" size="medium" />
+            
+            {/* Bloco 1: Nome e Especialidade */}
+            <div className="box-perfil">
+              <h2>Nome: {nome}</h2>
+              <h4>Especialidade: {especialidade}</h4>
+            </div>
+
+            {/* Bloco 2: Sobre */}
+            <div className="box-perfil">
+              <h3>SOBRE:</h3>
+              <p>{meu_resumo}</p>
+            </div>
+
+            {/* Bloco 3: Contatos e CRN */}
+            <div className="box-perfil">
+              <h3>CONTATO:</h3>
+              <div className="contato-linhas">
+                <p><strong>Telefone:</strong> {numero}</p>
+                <p><strong>Email:</strong> {email}</p>
+                <p><strong>CRN:</strong> {crn}</p>
+              </div>
+            </div>
+
+            {/* Botão original alinhado conforme o padrão do site */}
+            <a href={formatarWhatsapp(numero)} target="_blank" rel="noopener noreferrer" className="link-agendamento">
+              <Buttons label="Agendar Consulta" variant="primary" size="large" />
             </a>
+
           </div>
         </div>
       </div>
