@@ -27,8 +27,11 @@ export function ProfessionalRow({ nutricionista, name, role, imageSrc }) {
                 variant="secondary"
                 size="small"
                 label={"Ver Perfil"}
-                // 🌟 CORREÇÃO AQUI: Mudado para '/PerfilNutricionistas' para bater com o card grande!
-                onClick={() => navigate('/PerfilNutricionistas', { state: { nutricionista } })} 
+                onClick={() =>
+                    navigate(`/PerfilNutricionistas?id=${nutricionista?.id || ""}`, {
+                        state: { nutricionista },
+                    })
+                }
             />
         </div>
     );

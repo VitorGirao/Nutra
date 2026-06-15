@@ -5,9 +5,7 @@ import SideBar from "../componets/NavBar/SideBar";
 import BarraPesquisa from "../componets/BarraPesquisa/BarraPesquisa";
 import Button from "../componets/Buttons/Buttons";
 import CardNutricionista from "../componets/Cards/CardNutricionista";
-
-import db from "../services/firebase/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { getNutritionists } from "../services/api";
 
 import { ChevronDown, Filter } from "lucide-react";
 
@@ -26,11 +24,7 @@ function PesquisaNutricionistas() {
   useEffect(() => {
     const buscarNutricionistas = async () => {
       try {
-        const snapshot = await getDocs(collection(db, "nutricionistas"));
-        const lista = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const lista = await getNutritionists();
         setNutricionistas(lista);
       } catch (error) {
         console.error("Erro ao buscar nutricionistas:", error);
@@ -63,14 +57,19 @@ function PesquisaNutricionistas() {
 
   const nutricionistasFiltrados = Array.isArray(nutricionistas)
     ? nutricionistas.filter((nutri) => {
-        const bateNoNome = nutri.nome?.toLowerCase().includes(termoPesquisa.toLowerCase()) || false;
-        const bateNoTipo = tipoSelecionado === "Todos" || nutri.especialidade === tipoSelecionado;
+        const bateNoNome =
+          nutri.nome?.toLowerCase().includes(termoPesquisa.toLowerCase()) ||
+          false;
+        const bateNoTipo =
+          tipoSelecionado === "Todos" ||
+          nutri.especialidade === tipoSelecionado;
         return bateNoNome && bateNoTipo;
       })
     : [];
 
   const nutricionistasOrdenados = [...nutricionistasFiltrados].sort((a, b) => {
-    if (ordem === "asc") return (a.nome || "").localeCompare(b.nome || "", "pt-BR");
+    if (ordem === "asc")
+      return (a.nome || "").localeCompare(b.nome || "", "pt-BR");
     else return (b.nome || "").localeCompare(a.nome || "", "pt-BR");
   });
 
@@ -83,7 +82,7 @@ function PesquisaNutricionistas() {
     "Nutricionista Materno Infantil",
     "Nutricionista Funcional",
     "Nutricionista Hospitalar",
-    "Nutricionista Estético"
+    "Nutricionista Estético",
   ];
 
   return (
@@ -106,7 +105,11 @@ function PesquisaNutricionistas() {
 
             <div className="filtro-botao-wrapper">
               <div onClick={toggleMenuFiltro}>
-                <Button variant="primary" icon={<Filter size={20} />} iconOnly={true} />
+                <Button
+                  variant="primary"
+                  icon={<Filter size={20} />}
+                  iconOnly={true}
+                />
               </div>
 
               {menuFiltroAberto && (
@@ -136,7 +139,9 @@ function PesquisaNutricionistas() {
           </h6>
 
           <button className="ordenar-btn" onClick={alternarOrdem}>
-            {ordem === "asc" ? "Ordem Alfabética (A-Z)" : "Ordem Alfabética (Z-A)"}
+            {ordem === "asc"
+              ? "Ordem Alfabética (A-Z)"
+              : "Ordem Alfabética (Z-A)"}
             <ChevronDown
               size={16}
               style={{
