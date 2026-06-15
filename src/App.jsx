@@ -7,6 +7,7 @@ import CadastroNutricionista from './componets/CadastroLogin/CadastroNutricionis
 import Login from './componets/CadastroLogin/Login'; 
 import PesquisaNutricionistas from "./pages/PesquisaNutricionistas";
 import PerfilNutricionistas from './componets/PerfilNutricionistas/PerfilNutricionistas';
+import EditarPerfil from './pages/EditarPerfil';
 
 // NOVA IMPORTAÇÃO: Importando a sua nova página de Feed
 import Feed from './pages/Feed'; // Ajuste o caminho conforme onde salvou a pasta da página
@@ -45,6 +46,8 @@ function App() {
 
           {/* 5. Rota do Perfil Detalhado do Nutricionista */}
           <Route path="/PerfilNutricionistas" element={<PerfilNutricionistas />} />
+
+          <Route path="/editar-perfil" element={<EditarPerfil />} />
         </Routes>
       </BrowserRouter>
     </div>
