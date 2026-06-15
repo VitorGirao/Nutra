@@ -18,7 +18,7 @@ function CardNutricionista({ foto, nome, tipo, resumo, nutricionista }) {
         <TipoNutricionista tipo={tipo} />
         <ResumoNutricionista resumo={resumo} />
 
-        <Link to="/PerfilNutricionistas" state={{ nutricionista }}>
+        <Link to={`/PerfilNutricionistas?id=${nutricionista?.id || ""}`} state={{ nutricionista }}>
           <Buttons
             label="Ver Perfil"
             variant="primary"

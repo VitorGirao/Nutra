@@ -1,16 +1,75 @@
-# React + Vite
+# Nutra Monorepo (Simples)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este repositorio foi organizado em duas camadas no mesmo projeto:
 
-Currently, two official plugins are available:
+- Frontend React + Vite (raiz do repositorio, default)
+- Backend Express + Firebase Admin em `backend/`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+O frontend nao acessa mais Firestore diretamente nos fluxos de leitura de feed, pesquisa e perfil. Agora ele consome a API HTTP do backend.
 
-## React Compiler
+## Endpoints da API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `GET /posts`
+- `GET /nutricionistas`
+- `GET /nutricionistas/featured?limit=3`
+- `GET /nutricionistas/:id`
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Instalar dependencias do frontend (raiz):
+
+```bash
+npm install
+```
+
+2. Instalar dependencias do backend:
+
+```bash
+npm --prefix backend install
+```
+
+3. Configurar ambiente do backend:
+
+```bash
+copy backend\.env.example backend\.env
+```
+
+4. Criar pasta de segredo e adicionar `serviceAccount.json` do Firebase Admin:
+
+```bash
+mkdir backend\secrets
+```
+
+## Executar localmente
+
+1. Rodar backend (porta `3001`):
+
+```bash
+npm --prefix backend run dev
+```
+
+2. Em outro terminal, rodar frontend (porta `5173`):
+
+```bash
+npm run dev
+```
+
+Opcional: definir URL da API no frontend com `VITE_API_BASE_URL` em `.env.local`:
+
+```bash
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+## Verificacoes executadas
+
+Frontend build:
+
+```bash
+npm run build
+```
+
+Backend syntax check:
+
+```bash
+npm --prefix backend run check
+```
