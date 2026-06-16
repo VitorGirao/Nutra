@@ -8,6 +8,7 @@ import Login from './componets/CadastroLogin/Login';
 import PesquisaNutricionistas from "./pages/PesquisaNutricionistas";
 import PerfilNutricionistas from './componets/PerfilNutricionistas/PerfilNutricionistas';
 import EditarPerfil from './pages/EditarPerfil';
+import LandingPage from './pages/LandingPage';
 
 // NOVA IMPORTAÇÃO: Importando a sua nova página de Feed
 import Feed from './pages/Feed'; // Ajuste o caminho conforme onde salvou a pasta da página
@@ -48,6 +49,8 @@ function App() {
           <Route path="/PerfilNutricionistas" element={<PerfilNutricionistas />} />
 
           <Route path="/editar-perfil" element={<EditarPerfil />} />
+
+          <Route path='/landing' element={<LandingPage/>}/>
         </Routes>
       </BrowserRouter>
     </div>
