@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./landingpage.css"
 import NavBar from "../componets/NavBar/NavBar";
 import frutasImg from "../assets/frutas 1.png";
@@ -10,12 +11,26 @@ import maca1 from "../assets/maça 1.png";
 import fundoCTA from "../assets/fundocta.png";
 
 export default function LandingPage() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (location.state?.scrollTo) {
+            const elemento = document.querySelector(
+                `[data-section="${location.state.scrollTo}"]`
+            );
+            if (elemento) {
+                elemento.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    }, [location.state]);
+
     return (
         <div>
             <NavBar />
 
             {/* HERO */}
-            <section className="hero-section">
+            <section className="hero-section" data-section="inicio">
                 <div className="hero-container">
                     <div className="hero-content">
                         <div className="hero-text">
@@ -33,7 +48,7 @@ export default function LandingPage() {
             </section>
 
             {/* SOBRE */}
-            <section className="sobre">
+            <section className="sobre" data-section="sobre">
                 <div className="sobre-container">
                     <div className="Character">
                         <img src={laranja} alt="laranja" />
@@ -48,7 +63,7 @@ export default function LandingPage() {
             </section>
 
             {/* BENEFÍCIOS */}
-            <section className="beneficios">
+            <section className="beneficios" data-section="beneficios">
                 <img src={separador1} alt="separador 1" className="separador" />
                 <div className="beneficios-container">
                     <h2>Por que usar o Nutra?</h2>
@@ -100,7 +115,7 @@ export default function LandingPage() {
             </section>
 
             {/* COMO FUNCIONA */}
-            <section>
+            <section data-section="comoFunciona">
                 <div className="comoFunciona-container">
                     <div className="comoFunciona-conteudo">
                         <div>
@@ -127,7 +142,7 @@ export default function LandingPage() {
                     <h2>
                         Venha para o Nutra e descubra como comer melhor pode ser mais simples.
                     </h2>
-                    <button className="cta-button">Faça seu cadastro</button>
+                    <button className="cta-button" onClick={() => navigate('/escolher-perfil')}>Faça seu cadastro</button>
                 </div>
 
                 {/* Imagem com a nova classe */}

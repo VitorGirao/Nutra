@@ -1,43 +1,73 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Home, Users, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Home, Star, BookOpen, BookLock, User, Menu, X, Book } from 'lucide-react';
 import "./NavBar.css";
+import nutraLogo from "../../assets/NutraLogo.png";
 
-const NavBar = ({ textoVoltar = "nutricionistas" }) => {
+const NavBar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [menuAberto, setMenuAberto] = useState(false);
 
-    const handleVoltar = () => {
-        // Se não houver histórico, força ir para a tela de pesquisa
-        if (window.history.length <= 1) {
-            navigate('/PesquisaNutricionistas');
-        } else {
-            navigate(-1);
+    // Faz o scroll suave até a section pelo data-section.
+    // Se o usuário não estiver na landing page, navega pra lá primeiro
+    // e só depois rola até a section (usando state pra avisar o destino).
+    const irPara = (destino) => {
+        setMenuAberto(false);
+
+        if (location.pathname !== '/landing') {
+            navigate('/landing', { state: { scrollTo: destino } });
+            return;
         }
+
+        const elemento = document.querySelector(`[data-section="${destino}"]`);
+        if (elemento) {
+            elemento.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+    const irParaLogin = () => {
+        setMenuAberto(false);
+        navigate('/login');
     };
 
     return (
         <nav className="navbar">
-            <div id="voltar" onClick={handleVoltar} style={{ cursor: 'pointer' }}>
-                <ArrowLeft size={24} className="icon" />
-                <p>{textoVoltar}</p>
-            </div>
-            
-            <img src="" alt="Logo" />
-            
-            <div id="acoes">
-                <div id="inicio">
+            <img src={nutraLogo} alt="Logo" className="navbar-logo" />
+
+            {/* Botão hamburguer, só aparece no mobile */}
+            <button
+                className="navbar-toggle"
+                onClick={() => setMenuAberto(!menuAberto)}
+                aria-label="Abrir menu"
+            >
+                {menuAberto ? <X size={26} /> : <Menu size={26} />}
+            </button>
+
+            <div className={`navbar-acoes ${menuAberto ? "navbar-acoes-aberto" : ""}`}>
+                <div className="navbar-item" onClick={() => irPara('inicio')}>
                     <Home size={20} className="icon" />
                     <p>Início</p>
                 </div>
-                
-                <div id="nutricionistas">
-                    <Users size={20} className="icon" />
-                    <p>nutricionistas</p>
+
+                <div className="navbar-item" onClick={() => irPara('sobre')}>
+                    <BookOpen size={20} className="icon" />
+                    <p>Sobre</p>
                 </div>
-                
-                <div id="perfil">
+
+                <div className="navbar-item" onClick={() => irPara('beneficios')}>
+                    <Star size={20} className="icon" />
+                    <p>Benefícios</p>
+                </div>
+
+                <div className="navbar-item" onClick={() => irPara('comoFunciona')}>
+                    <Book size={20} className="icon" />
+                    <p>Como funciona</p>
+                </div>
+
+                <div className="navbar-item" onClick={irParaLogin}>
                     <User size={20} className="icon" />
-                    <p>Perfil</p>
+                    <p>Login</p>
                 </div>
             </div>
         </nav>

@@ -30,8 +30,11 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          {/* 1. Página Inicial de Boas-Vindas (Escolha de Perfil) */}
-          <Route path="/" element={<EscolhaPerfil />} />
+          {/* 1. Página Inicial agora é a Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Tela de Escolha de Perfil, movida para sua própria rota */}
+          <Route path="/escolher-perfil" element={<EscolhaPerfil />} />
 
           {/* 2. Rota de Cadastro de Nutricionista (Singular) */}
           <Route path="/CadastroNutricionista" element={<CadastroNutricionista />} />
