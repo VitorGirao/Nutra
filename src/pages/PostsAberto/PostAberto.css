@@ -1,0 +1,59 @@
+:root {
+  --sidebar-width: 280px;
+}
+
+.post-aberto-page {
+  min-height: 100vh;
+  background: #fff;
+  font-family: "Roboto", sans-serif;
+  margin-left: var(--sidebar-width);
+}
+
+.post-aberto-conteudo {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.post-aberto-toast {
+  position: fixed;
+  bottom: 28px;
+  left: calc(50% + var(--sidebar-width) / 2);
+  transform: translateX(-50%);
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  z-index: 200;
+  animation: fadeInUp 0.3s ease;
+}
+
+.post-aberto-toast.sucesso {
+  background-color: #10b894;
+}
+.post-aberto-toast.erro {
+  background-color: #e05252;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* No mobile a sidebar normalmente vira drawer/some, então removemos o deslocamento */
+@media (max-width: 900px) {
+  .post-aberto-page {
+    margin-left: 0;
+  }
+
+  .post-aberto-toast {
+    left: 50%;
+  }
+}

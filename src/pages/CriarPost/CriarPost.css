@@ -1,0 +1,131 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #fff;
+  color: #1a1a1a;
+}
+
+/* Largura da sidebar, usada para reservar espaço no conteúdo */
+:root {
+  --sidebar-width: 280px;
+}
+
+/* Wrapper que ocupa toda a área à direita da sidebar fixa */
+.pagina-criar-post {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  background-color: #10b894;
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.navbar__logo {
+  background: #fff;
+  color: #10b894;
+  font-weight: 700;
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Barra de ações */
+.acoes-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 32px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Conteúdo: centralizado dentro do espaço já livre da sidebar */
+.conteudo {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+  flex: 1;
+}
+
+.tabs {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #eee;
+}
+
+.tab {
+  padding: 8px 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #888;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.tab.ativa {
+  color: #10b894;
+  border-bottom-color: #10b894;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background-color: #e6f7f3;
+  border-left: 4px solid #10b894;
+  border-radius: 4px;
+  color: #0a7a62;
+  font-size: 0.9rem;
+}
+
+/* No mobile a sidebar normalmente vira drawer/some, então removemos o deslocamento */
+@media (max-width: 900px) {
+  .pagina-criar-post {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 0 16px;
+  }
+  .acoes-bar {
+    padding: 12px 16px;
+  }
+  .conteudo {
+    padding: 20px 16px 60px;
+  }
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SideBar from "../componets/NavBar/SideBar";
 import PostCard from "../componets/Cards/PostCard/PostCard";
 import Button from "../componets/Buttons/Buttons";
@@ -11,6 +12,7 @@ function Feed() {
   const [loadingFeed, setLoadingFeed] = useState(true);
   const [nutricionistasAleatorios, setNutricionistasAleatorios] = useState([]);
   const [loadingNutris, setLoadingNutris] = useState(true);
+  const navigate = useNavigate();
 
   // Ícone de "Soma/Plus" profissional em SVG para o botão de criar card
   const PlusIcon = (
@@ -102,7 +104,7 @@ function Feed() {
                 <Button
                   variant="primary"
                   size="medium"
-                  onClick={() => console.log("Criar publicação")}
+                  onClick={() => navigate('/criar-post')}
                   label={
                     <div
                       style={{

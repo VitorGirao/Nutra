@@ -4,11 +4,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // Importações das Páginas e Componentes Principais
 import EscolhaPerfil from './componets/EscolherPerfil/EscolherPerfil';
 import CadastroNutricionista from './componets/CadastroLogin/CadastroNutricionista';
-import Login from './componets/CadastroLogin/Login'; 
+import Login from './componets/CadastroLogin/Login';
 import PesquisaNutricionistas from "./pages/PesquisaNutricionistas";
 import PerfilNutricionistas from './componets/PerfilNutricionistas/PerfilNutricionistas';
 import EditarPerfil from './pages/EditarPerfil';
 import LandingPage from './pages/LandingPage';
+import CriarPost from './pages/CriarPost/CriarPost';
+import PostAberto from './pages/PostsAberto/PostAberto';
+import CriarPostPage from './pages/CriarPostPage/CriarPostPage';
+import PostAbertoPage from './pages/Postabertopage/Postabertopage';
 
 // NOVA IMPORTAÇÃO: Importando a sua nova página de Feed
 import Feed from './pages/Feed'; // Ajuste o caminho conforme onde salvou a pasta da página
@@ -17,7 +21,7 @@ function App() {
   return (
     /* O estilo inline abaixo reseta a largura e garante que o display flex alinhe a Sidebar */
     <div style={{ width: '100vw', minHeight: '100vh', margin: 0, padding: 0, display: 'flex', flexDirection: 'column' }}>
-      
+
       {/* Injeção sutil para garantir que o body do navegador não crie margens em nenhuma rota */}
       <style>{`
         body {
@@ -53,7 +57,13 @@ function App() {
 
           <Route path="/editar-perfil" element={<EditarPerfil />} />
 
-          <Route path='/landing' element={<LandingPage/>}/>
+          <Route path='/landing' element={<LandingPage />} />
+
+          <Route path='/criar-post' element={<CriarPostPage />} />
+
+          <Route path='/ver-post' element={<PostAbertoPage />} />
+
+
         </Routes>
       </BrowserRouter>
     </div>

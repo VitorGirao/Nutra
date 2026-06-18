@@ -9,7 +9,6 @@ body {
 /* ========== HERO ========== */
 .hero-section {
     position: relative;
-    margin-top: 4rem;
     width: 100%;
     min-height: 80vh;
     overflow: hidden;
@@ -314,7 +313,6 @@ body {
     /* Hero — texto fica sobre a imagem com menos margem */
     .hero-section {
         min-height: 50vh;
-        margin-top: 3.5rem;
     }
 
     .hero-text {
