@@ -30,7 +30,7 @@ export default function Login() {
       alert('Login efetuado com sucesso! Bem-vindo.');
       
       // REDIRECIONAMENTO COM SUCESSO: Joga o usuário para a lista de nutricionistas!
-      navigate('/pesquisa');
+      navigate('/feed');
 
     } catch (erro) {
       setErroMensagem(erro);
