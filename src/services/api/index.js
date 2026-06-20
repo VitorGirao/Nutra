@@ -20,8 +20,6 @@ async function request(path) {
   return body;
 }
 
-
-
 export async function toggleSalvarPost(nutriId, postId) {
   const response = await fetch(`${API_BASE_URL}/nutricionistas/${nutriId}/favoritar`, {
     method: "POST",
@@ -63,4 +61,8 @@ export async function getFeaturedNutritionists(limit = 3) {
 
 export async function getNutritionistById(id) {
   return request(`/nutricionistas/${id}`);
+}
+
+export async function getPostById(id) {
+  return request(`/posts/${id}`);
 }

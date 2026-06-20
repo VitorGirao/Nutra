@@ -36,4 +36,29 @@ export class PostService {
       };
     });
   }
+
+  async getPostById(id) {
+    const post = await PostRepository.findById(id);
+    if (!post) return null;
+
+    let autor = createFallbackNutricionista();
+    if (post.id_nutricionista) {
+      const nutricionista = await NutricionistaRepository.findById(post.id_nutricionista);
+      if (nutricionista) {
+        autor = nutricionista;
+      }
+    }
+
+    return {
+      id: post.id,
+      titulo: post.titulo || "",
+      subtitulo: post.subtitulo || "",
+      resumo_do_post: post.resumo_do_post || "",
+      conteudo: post.conteudo || post.corpo || post.resumo_do_post || "",
+      imagem_posta: post.imagem_posta || post.imagem_post || "",
+      id_nutricionista: post.id_nutricionista || "",
+      data_criacao: post.data_criacao || "Recentemente",
+      autor,
+    };
+  }
 }

@@ -13,4 +13,19 @@ router.get("/posts", async (_req, res, next) => {
   }
 });
 
+router.get("/posts/:id", async (req, res, next) => {
+  try {
+    const post = await service.getPostById(req.params.id);
+    if (!post) {
+      return res.status(404).json({
+        code: "POST_NOT_FOUND",
+        message: "Postagem não encontrada.",
+      });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

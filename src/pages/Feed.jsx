@@ -44,7 +44,6 @@ function Feed() {
           console.log("Buscando posts salvos atualizados para o Nutri:", nutriId);
           const dadosNutri = await getNutricionistaLogado(nutriId);
           
-          // Verifica todas as variações possíveis de nome de campo que vêm do banco
           if (dadosNutri) {
             const postsSalvosNoBanco = dadosNutri["id posts salvos"] || dadosNutri.id_posts_salvos || dadosNutri.postsSalvos || [];
             setPostsSalvos(postsSalvosNoBanco);
@@ -76,7 +75,10 @@ function Feed() {
   }, []);
 
   const handleLerMais = (post) => {
-    console.log("Abrindo postagem completa:", post);
+    const postId = post?.id || post;
+    if (postId) {
+      navigate(`/ver-post/${postId}`);
+    }
   };
 
   const handleSalvar = async (id) => {
