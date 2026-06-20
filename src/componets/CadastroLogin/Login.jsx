@@ -16,24 +16,31 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // Validação simulada da sua amiga
-          if (email === 'andressa@gmail.com' && senha === '123456') {
-            resolve('Login efetuado!');
-          } else {
-            reject('E-mail ou senha incorreta!');
-          }
-        }, 1500);
+      // Dispara a requisição real para a sua rota de login na porta 3001
+      const resposta = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, senha }),
       });
+
+      const dadosResultado = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(dadosResultado.message || 'E-mail ou senha incorretos.');
+      }
+
+      // SALVA A SESSÃO: Guarda o objeto do nutricionista purinho no navegador como texto
+      localStorage.setItem('usuarioLogado', JSON.stringify(dadosResultado));
 
       alert('Login efetuado com sucesso! Bem-vindo.');
       
-      // REDIRECIONAMENTO COM SUCESSO: Joga o usuário para a lista de nutricionistas!
+      // Redireciona para o feed
       navigate('/feed');
 
     } catch (erro) {
-      setErroMensagem(erro);
+      setErroMensagem(erro.message || 'Não foi possível conectar ao servidor.');
     } finally {
       setCarregando(false);
     }

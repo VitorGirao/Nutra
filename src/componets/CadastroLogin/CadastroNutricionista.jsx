@@ -68,7 +68,7 @@ export default function CadastroNutricionista() {
     setCrn(valor);
   };
 
-  const handleCadastro = (evento) => {
+  const handleCadastro = async (evento) => {
     evento.preventDefault();
     setErroMensagem('');
 
@@ -90,8 +90,35 @@ export default function CadastroNutricionista() {
       return;
     }
 
-    alert('Cadastro de nutricionista criado com sucesso!');
-    navigate('/login'); 
+    try {
+      const resposta = await fetch('http://localhost:3001/nutricionistas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          senha,
+          crn,
+          cep: cepLimpo,
+          telefone: telefoneLimpo,
+          genero
+        }),
+      });
+
+      const dadosResultado = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(dadosResultado.message || 'Erro ao realizar o cadastro.');
+      }
+
+      alert('Cadastro de nutricionista criado com sucesso!');
+      navigate('/login'); 
+
+    } catch (erro) {
+      setErroMensagem(erro.message || 'Não foi possível conectar ao servidor.');
+    }
   };
 
   return (

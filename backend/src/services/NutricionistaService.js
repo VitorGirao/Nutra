@@ -48,4 +48,43 @@ export class NutricionistaService {
     const nutricionista = await NutricionistaRepository.findById(id);
     return nutricionista ? toNutricionista(nutricionista) : null;
   }
+
+  async cadastrarNutricionista(dadosFormulario) {
+    const emailExistente = await NutricionistaRepository.findByEmail(dadosFormulario.email);
+    if (emailExistente) {
+      throw new Error("Este e-mail já está cadastrado no sistema.");
+    }
+
+    const crnExistente = await NutricionistaRepository.findByCrn(dadosFormulario.crn);
+    if (crnExistente) {
+      throw new Error("Já existe um nutricionista cadastrado com este CRN.");
+    }
+
+    const dadosParaSalvar = {
+      nome: dadosFormulario.nome,
+      email: dadosFormulario.email,
+      senha: dadosFormulario.senha,
+      crn: dadosFormulario.crn,
+      cep: dadosFormulario.cep || "",
+      genero: dadosFormulario.genero,
+      numero: dadosFormulario.telefone || "",
+      especialidade: "Geral", 
+      meu_resumo: "",
+      foto_do_nutricionista: ""
+    };
+
+    const novoNutri = await NutricionistaRepository.create(dadosParaSalvar);
+    return toNutricionista(novoNutri);
+  }
+
+  async autenticarNutricionista(email, senha) {
+    const nutricionista = await NutricionistaRepository.findByEmail(email);
+    if (!nutricionista) {
+      throw new Error("E-mail ou senha incorretos.");
+    }
+    if (nutricionista.senha !== senha) {
+      throw new Error("E-mail ou senha incorretos.");
+    }
+    return toNutricionista(nutricionista);
+  }
 }

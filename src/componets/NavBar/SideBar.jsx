@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './SideBar.css';
 import SideBarButton from '../Buttons/SideBarButton';
+import { Avatar } from '../Cards/AvatarCard/Avatar';
+
+const converterUrlGithub = (url) => {
+  if (!url) return "";
+  return url
+    .replace("https://github.com/", "https://raw.githubusercontent.com/")
+    .replace("/blob/", "/");
+};
 
 function HomeIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
+      <polyline points="9 22 9 12 15 12 15 22" /> 
     </svg>
   );
 }
@@ -43,8 +51,19 @@ function MoreIcon() {
 
 function SideBar() {
   const navigate = useNavigate();
-  const location = useLocation(); // pega a rota atual
-  const rota = location.pathname;  // ex: '/feed', '/pesquisa'
+  const location = useLocation();
+  const rota = location.pathname;
+
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const dadosDados = localStorage.getItem('usuarioLogado');
+    if (dadosDados) {
+      setUsuario(JSON.parse(dadosDados));
+    }
+  }, []);
+
+  const fotoPadrao = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces";
 
   return (
     <aside className="sidebar-container">
@@ -53,39 +72,40 @@ function SideBar() {
       </div>
 
       <nav className="sidebar-nav-links">
-        <SideBarButton 
-          Icon={HomeIcon} 
-          label="Início" 
+        <SideBarButton
+          Icon={HomeIcon}
+          label="Início"
           active={rota === '/feed'}
-          onClick={() => navigate('/feed')} 
+          onClick={() => navigate('/feed')}
         />
-        <SideBarButton 
-          Icon={NutritionistIcon} 
-          label="Nutricionistas" 
+        <SideBarButton
+          Icon={NutritionistIcon}
+          label="Nutricionistas"
           active={rota === '/pesquisa'}
-          onClick={() => navigate('/pesquisa')} 
+          onClick={() => navigate('/pesquisa')}
         />
-        <SideBarButton 
-          Icon={SavedIcon} 
-          label="Salvos" 
+        <SideBarButton
+          Icon={SavedIcon}
+          label="Salvos"
           active={rota === '/salvos'}
-          onClick={() => navigate('/salvos')} 
+          onClick={() => navigate('/salvos')}
         />
       </nav>
 
       <div className="sidebar-footer">
-        <button 
+        <button
           className={`sidebar-profile-card ${rota === '/perfil' ? 'sidebar-profile-card--active' : ''}`}
           onClick={() => navigate('/perfil')}
         >
           <div className="sidebar-profile-info">
-            <img 
-              className="sidebar-avatar" 
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces" 
+            <Avatar 
+              src={usuario?.foto_do_nutricionista ? converterUrlGithub(usuario.foto_do_nutricionista) : fotoPadrao} 
               alt="Foto de perfil" 
             />
             <div className="sidebar-user-text">
-              <span className="sidebar-username">Maria Joana</span>
+              <span className="sidebar-username">
+                {usuario ? usuario.nome : 'Nutricionista'}
+              </span>
               <span className="sidebar-user-sub">Ver perfil &gt;</span>
             </div>
           </div>

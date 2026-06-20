@@ -18,6 +18,27 @@ class NutricionistaRepositoryClass {
 
     return { id: snapshot.id, ...snapshot.data() };
   }
+
+  async create(dadosNutricionista) {
+    const docRef = await db.collection(COLLECTION).add(dadosNutricionista);
+    return { id: docRef.id, ...dadosNutricionista };
+
+    
+  }
+
+  async findByEmail(email) {
+    const snapshot = await db.collection(COLLECTION).where("email", "==", email).get();
+    if (snapshot.empty) return null;
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
+  }
+
+  async findByCrn(crn) {
+    const snapshot = await db.collection(COLLECTION).where("crn", "==", crn).get();
+    if (snapshot.empty) return null;
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
+  }
 }
 
 export const NutricionistaRepository = new NutricionistaRepositoryClass();
