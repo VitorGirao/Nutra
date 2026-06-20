@@ -1,4 +1,5 @@
 import { db } from "../config/firebaseAdmin.js";
+import { FieldValue } from "firebase-admin/firestore";
 
 const COLLECTION = "nutricionistas";
 
@@ -22,8 +23,6 @@ class NutricionistaRepositoryClass {
   async create(dadosNutricionista) {
     const docRef = await db.collection(COLLECTION).add(dadosNutricionista);
     return { id: docRef.id, ...dadosNutricionista };
-
-    
   }
 
   async findByEmail(email) {
@@ -38,6 +37,18 @@ class NutricionistaRepositoryClass {
     if (snapshot.empty) return null;
     const doc = snapshot.docs[0];
     return { id: doc.id, ...doc.data() };
+  }
+
+  async addFavorito(nutriId, postId) {
+    await db.collection(COLLECTION).doc(nutriId).update({
+      "id posts salvos": FieldValue.arrayUnion(postId)
+    });
+  }
+
+  async removeFavorito(nutriId, postId) {
+    await db.collection(COLLECTION).doc(nutriId).update({
+      "id posts salvos": FieldValue.arrayRemove(postId)
+    });
   }
 }
 

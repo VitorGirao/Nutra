@@ -5,16 +5,19 @@ import PostCard from "../componets/Cards/PostCard/PostCard";
 import Button from "../componets/Buttons/Buttons";
 import NutritionistCard from "../componets/Cards/AvatarCard/NutritionistCard";
 import "./Feed.css";
-import { getFeaturedNutritionists, getPosts } from "../services/api";
+import { getFeaturedNutritionists, getPosts, getNutricionistaLogado, toggleSalvarPost } from "../services/api/index";
 
 function Feed() {
   const [listaPostagens, setListaPostagens] = useState([]);
   const [loadingFeed, setLoadingFeed] = useState(true);
   const [nutricionistasAleatorios, setNutricionistasAleatorios] = useState([]);
   const [loadingNutris, setLoadingNutris] = useState(true);
+  const [postsSalvos, setPostsSalvos] = useState([]);
   const navigate = useNavigate();
 
-  // Ícone de "Soma/Plus" profissional em SVG para o botão de criar card
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+  const nutriId = usuarioLogado.id || usuarioLogado._id || usuarioLogado.uid;
+
   const PlusIcon = (
     <svg
       width="16"
@@ -31,14 +34,22 @@ function Feed() {
     </svg>
   );
 
-  // ==========================================================================
-  // FETCH DO FEED (Buscando os posts e os respectivos dados dos autores)
-  // ==========================================================================
   useEffect(() => {
     const carregarFeedCompleto = async () => {
       try {
         const posts = await getPosts();
         setListaPostagens(Array.isArray(posts) ? posts : []);
+
+        if (nutriId) {
+          console.log("Buscando posts salvos atualizados para o Nutri:", nutriId);
+          const dadosNutri = await getNutricionistaLogado(nutriId);
+          
+          // Verifica todas as variações possíveis de nome de campo que vêm do banco
+          if (dadosNutri) {
+            const postsSalvosNoBanco = dadosNutri["id posts salvos"] || dadosNutri.id_posts_salvos || dadosNutri.postsSalvos || [];
+            setPostsSalvos(postsSalvosNoBanco);
+          }
+        }
       } catch (error) {
         console.error("Erro ao carregar o feed de postagens:", error);
       } finally {
@@ -47,21 +58,15 @@ function Feed() {
     };
 
     carregarFeedCompleto();
-  }, []);
+  }, [nutriId]);
 
-  // ==========================================================================
-  // FETCH DO WIDGET LATERAL (Busca todos os nutris e sorteia 3 para exibição)
-  // ==========================================================================
   useEffect(() => {
     const buscarESortearNutricionistas = async () => {
       try {
         const featured = await getFeaturedNutritionists(3);
         setNutricionistasAleatorios(Array.isArray(featured) ? featured : []);
       } catch (error) {
-        console.error(
-          "Erro ao buscar nutricionistas para o widget lateral:",
-          error,
-        );
+        console.error("Erro ao buscar nutricionistas para o widget lateral:", error);
       } finally {
         setLoadingNutris(false);
       }
@@ -70,16 +75,26 @@ function Feed() {
     buscarESortearNutricionistas();
   }, []);
 
-  // ==========================================================================
-  // HANDLERS DAS AÇÕES DOS CARDS
-  // ==========================================================================
   const handleLerMais = (post) => {
     console.log("Abrindo postagem completa:", post);
-    // Aqui futuramente você pode colocar o navigate(`/post/${post.id}`, { state: { post } })
   };
 
-  const handleSalvar = (id) => {
-    console.log("Salvar post com ID:", id);
+  const handleSalvar = async (id) => {
+    if (!nutriId) {
+      alert("Erro: ID do nutricionista não encontrado no localStorage! Faça login novamente.");
+      return;
+    }
+
+    try {
+      const resultado = await toggleSalvarPost(nutriId, id);
+      if (resultado.status === "salvo") {
+        setPostsSalvos((prev) => [...prev, id]);
+      } else {
+        setPostsSalvos((prev) => prev.filter((postId) => postId !== id));
+      }
+    } catch (error) {
+      console.error("Erro ao alternar o estado de salvo da postagem:", error);
+    }
   };
 
   const handleOpcoes = (id) => {
@@ -92,12 +107,11 @@ function Feed() {
 
       <main className="pesquisa-conteudo-principal">
         <div className="conteudo-duas-colunas">
-          {/* COLUNA ESQUERDA: FEED */}
           <div className="coluna-feed">
             <section>
               <div className="header-flex-title">
                 <div>
-                  <h1>Bem-vindo de volta, Maria!</h1>
+                  <h1>Bem-vindo de volta, {usuarioLogado.nome || "Maria"}!</h1>
                   <h4>Confira suas leituras para hoje</h4>
                 </div>
 
@@ -106,13 +120,7 @@ function Feed() {
                   size="medium"
                   onClick={() => navigate('/criar-post')}
                   label={
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                    >
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       {PlusIcon}
                       Criar card
                     </div>
@@ -131,6 +139,7 @@ function Feed() {
                   <PostCard
                     key={post.id}
                     post={post}
+                    isSalvo={postsSalvos.includes(post.id)}
                     onLerMais={handleLerMais}
                     onSalvar={handleSalvar}
                     onOpcoes={handleOpcoes}
@@ -140,7 +149,6 @@ function Feed() {
             </div>
           </div>
 
-          {/* COLUNA DIREITA: WIDGET LATERAL */}
           <aside className="coluna-widgets">
             <NutritionistCard
               nutricionistas={nutricionistasAleatorios}

@@ -5,7 +5,7 @@ import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import './PostCard.css';
 
-function PostCard({ post, onLerMais, onSalvar, onOpcoes }) {
+function PostCard({ post, isSalvo, onLerMais, onSalvar, onOpcoes }) {
   const autor = post.autor || {};
 
   return (
@@ -17,7 +17,6 @@ function PostCard({ post, onLerMais, onSalvar, onOpcoes }) {
         onOpcoes={() => onOpcoes && onOpcoes(post.id)} 
       />
       
-      {/* 🌟 MUDANÇA AQUI: Lendo 'imagem_posta' (como está no banco) ou 'imagem_post' */}
       <CardImage 
         src={post.imagem_posta || post.imagem_post} 
         alt={post.titulo} 
@@ -28,7 +27,9 @@ function PostCard({ post, onLerMais, onSalvar, onOpcoes }) {
         subtitulo={post.subtitulo} 
         resumo={post.resumo_do_post} 
       />
+      
       <CardFooter 
+        isSalvo={isSalvo}
         onSalvar={() => onSalvar && onSalvar(post.id)} 
         onLerMais={() => onLerMais && onLerMais(post)} 
       />

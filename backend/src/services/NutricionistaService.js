@@ -10,9 +10,9 @@ function toNutricionista(data = {}) {
     email: data.email || "",
     crn: data.crn || "",
     foto_do_nutricionista: data.foto_do_nutricionista || "",
+    "id posts salvos": data["id posts salvos"] || [] 
   };
 }
-
 function createFallbackNutricionista() {
   return {
     id: "unknown",
@@ -86,5 +86,22 @@ export class NutricionistaService {
       throw new Error("E-mail ou senha incorretos.");
     }
     return toNutricionista(nutricionista);
+  }
+
+async alternarFavorito(nutriId, postId) {
+    const nutricionista = await NutricionistaRepository.findById(nutriId);
+    if (!nutricionista) {
+      throw new Error("Nutricionista não encontrado.");
+    }
+
+    const salvos = nutricionista["id posts salvos"] || [];
+
+    if (salvos.includes(postId)) {
+      await NutricionistaRepository.removeFavorito(nutriId, postId);
+      return { status: "removido", postId };
+    } else {
+      await NutricionistaRepository.addFavorito(nutriId, postId);
+      return { status: "salvo", postId };
+    }
   }
 }

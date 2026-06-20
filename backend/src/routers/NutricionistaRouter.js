@@ -66,4 +66,20 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
+router.post("/nutricionistas/:id/favoritar", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { postId } = req.body;
+
+    if (!postId) {
+      return res.status(400).json({ message: "O ID do post é obrigatório." });
+    }
+
+    const resultado = await service.alternarFavorito(id, postId);
+    res.status(200).json(resultado);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
