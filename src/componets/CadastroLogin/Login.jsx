@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Adicionado useNavigate
+import { API_BASE_URL } from '../../services/api';
 import './auth.css'; // Importa o CSS base em rem que já está na mesma pasta
 
 export default function Login() {
@@ -16,8 +17,7 @@ export default function Login() {
     setCarregando(true);
 
     try {
-      // Dispara a requisição real para a sua rota de login na porta 3001
-      const resposta = await fetch('http://localhost:3001/login', {
+      const resposta = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

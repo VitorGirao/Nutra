@@ -5,7 +5,14 @@ import PostCard from "../componets/Cards/PostCard/PostCard";
 import Button from "../componets/Buttons/Buttons";
 import NutritionistCard from "../componets/Cards/AvatarCard/NutritionistCard";
 import "./Feed.css";
-import { getFeaturedNutritionists, getPosts, getNutricionistaLogado, toggleSalvarPost } from "../services/api/index";
+import {
+  deletePost,
+  getFeaturedNutritionists,
+  getNutricionistaLogado,
+  getPacienteLogado,
+  getPosts,
+  toggleSalvarPost,
+} from "../services/api/index";
 
 function Feed() {
   const [listaPostagens, setListaPostagens] = useState([]);
@@ -16,7 +23,10 @@ function Feed() {
   const navigate = useNavigate();
 
   const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
-  const nutriId = usuarioLogado.id || usuarioLogado._id || usuarioLogado.uid;
+  const tipoUsuario = usuarioLogado.tipo_usuario || usuarioLogado.tipoUsuario || "";
+  const isNutricionista = tipoUsuario.toLowerCase() === "nutricionista";
+  const isPaciente = tipoUsuario.toLowerCase() === "paciente";
+  const userId = usuarioLogado.id || usuarioLogado._id || usuarioLogado.uid;
 
   const PlusIcon = (
     <svg
@@ -40,12 +50,17 @@ function Feed() {
         const posts = await getPosts();
         setListaPostagens(Array.isArray(posts) ? posts : []);
 
-        if (nutriId) {
-          console.log("Buscando posts salvos atualizados para o Nutri:", nutriId);
-          const dadosNutri = await getNutricionistaLogado(nutriId);
-          
-          if (dadosNutri) {
-            const postsSalvosNoBanco = dadosNutri["id posts salvos"] || dadosNutri.id_posts_salvos || dadosNutri.postsSalvos || [];
+        if (userId && (isNutricionista || isPaciente)) {
+          const dadosUsuario = isNutricionista
+            ? await getNutricionistaLogado(userId)
+            : await getPacienteLogado(userId);
+
+          if (dadosUsuario) {
+            const postsSalvosNoBanco =
+              dadosUsuario["id posts salvos"] ||
+              dadosUsuario.id_posts_salvos ||
+              dadosUsuario.postsSalvos ||
+              [];
             setPostsSalvos(postsSalvosNoBanco);
           }
         }
@@ -57,7 +72,7 @@ function Feed() {
     };
 
     carregarFeedCompleto();
-  }, [nutriId]);
+  }, [userId, isNutricionista, isPaciente]);
 
   useEffect(() => {
     const buscarESortearNutricionistas = async () => {
@@ -82,13 +97,13 @@ function Feed() {
   };
 
   const handleSalvar = async (id) => {
-    if (!nutriId) {
-      alert("Erro: ID do nutricionista não encontrado no localStorage! Faça login novamente.");
+    if (!userId || (!isNutricionista && !isPaciente)) {
+      alert("Erro: ID do usuário não encontrado no localStorage! Faça login novamente.");
       return;
     }
 
     try {
-      const resultado = await toggleSalvarPost(nutriId, id);
+      const resultado = await toggleSalvarPost(tipoUsuario, userId, id);
       if (resultado.status === "salvo") {
         setPostsSalvos((prev) => [...prev, id]);
       } else {
@@ -101,6 +116,25 @@ function Feed() {
 
   const handleOpcoes = (id) => {
     console.log("Opções do post com ID:", id);
+  };
+
+  const handleExcluir = async (id) => {
+    if (!isNutricionista) {
+      return;
+    }
+
+    const confirmou = window.confirm("Deseja excluir este post?");
+    if (!confirmou) {
+      return;
+    }
+
+    try {
+      await deletePost(id);
+      setListaPostagens((prev) => prev.filter((post) => post.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir post:", error);
+      alert(error.message || "Não foi possível excluir o post.");
+    }
   };
 
   return (
@@ -117,17 +151,19 @@ function Feed() {
                   <h4>Confira suas leituras para hoje</h4>
                 </div>
 
-                <Button
-                  variant="primary"
-                  size="medium"
-                  onClick={() => navigate('/criar-post')}
-                  label={
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      {PlusIcon}
-                      Criar card
-                    </div>
-                  }
-                />
+                {isNutricionista && (
+                  <Button
+                    variant="primary"
+                    size="medium"
+                    onClick={() => navigate("/criar-post")}
+                    label={
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        {PlusIcon}
+                        Criar card
+                      </div>
+                    }
+                  />
+                )}
               </div>
             </section>
 
@@ -142,9 +178,13 @@ function Feed() {
                     key={post.id}
                     post={post}
                     isSalvo={postsSalvos.includes(post.id)}
+                    canManagePost={isNutricionista}
+                    canDeletePost={isNutricionista && post.id_nutricionista === userId}
+                    canSavePost={isNutricionista || isPaciente}
                     onLerMais={handleLerMais}
                     onSalvar={handleSalvar}
                     onOpcoes={handleOpcoes}
+                    onExcluir={handleExcluir}
                   />
                 ))
               )}

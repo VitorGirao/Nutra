@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { createPaciente } from '../../services/api';
 import './CadastroPaciente.css';
 
 function EyeIcon({ aberto }) {
@@ -35,6 +36,7 @@ function EyeIcon({ aberto }) {
 }
 
 export default function CadastroPaciente() {
+  const navigate = useNavigate();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -76,7 +78,7 @@ export default function CadastroPaciente() {
     setCep(valor);
   };
 
-  const handleCadastro = (evento) => {
+  const handleCadastro = async (evento) => {
     evento.preventDefault();
     setErroMensagem('');
 
@@ -98,7 +100,21 @@ export default function CadastroPaciente() {
       return;
     }
 
-    alert('Conta criada com sucesso!');
+    try {
+      await createPaciente({
+        nome,
+        email,
+        senha,
+        cep,
+        genero,
+        numero: telefone,
+      });
+
+      alert('Conta criada com sucesso!');
+      navigate('/login');
+    } catch (erro) {
+      setErroMensagem(erro.message || 'Não foi possível criar a conta.');
+    }
   };
 
   return (

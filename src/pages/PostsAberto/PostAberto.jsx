@@ -25,7 +25,7 @@ export default function PostAberto({ aoVoltar, toastInicial = null }) {
         setLoading(true);
         const dadosPost = await getPostById(id);
         
-        let urlOriginal = dadosPost.imagem_posta || dadosPost.imagem_post || dadosPost.imagemUrl || "";
+        let urlOriginal = dadosPost.imagem_post || dadosPost.imagem_posta || dadosPost.imagemUrl || "";
         let urlConvertida = urlOriginal;
 
         if (urlOriginal.includes("drive.google.com")) {
@@ -38,10 +38,11 @@ export default function PostAberto({ aoVoltar, toastInicial = null }) {
         const postFormatado = {
           titulo: dadosPost.titulo,
           subtitulo: dadosPost.subtitulo,
+          resumo_do_post: dadosPost.resumo_do_post,
           corpo: dadosPost.conteudo || dadosPost.corpo || dadosPost.resumo_do_post,
           imagemUrl: urlConvertida,
           autor: dadosPost.autor?.nome || "Nutricionista",
-          dataPublicacao: dadosPost.data_criacao || "Recentemente",
+          dataPublicacao: dadosPost.data_de_criacao || dadosPost.data_criacao || "Recentemente",
         };
 
         setPost(postFormatado);

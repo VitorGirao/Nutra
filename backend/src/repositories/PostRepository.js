@@ -18,6 +18,15 @@ class PostRepositoryClass {
 
     return { id: snapshot.id, ...snapshot.data() };
   }
+
+  async create(dadosPost) {
+    const docRef = await db.collection(COLLECTION).add(dadosPost);
+    return { id: docRef.id, ...dadosPost };
+  }
+
+  async delete(id) {
+    await db.collection(COLLECTION).doc(id).delete();
+  }
 }
 
 export const PostRepository = new PostRepositoryClass();

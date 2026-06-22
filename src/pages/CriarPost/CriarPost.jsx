@@ -7,11 +7,11 @@ import { publicarPost } from "../../services/postService/postService.js";
 import "./CriarPost.css";
 
 const DADOS_INICIAIS = {
+  imagemUrl: "",
   titulo: "",
   subtitulo: "",
+  resumo_do_post: "",
   corpo: "",
-  imagemUrl: "",
-  imagemArquivo: null,
 };
 
 export default function CriarPost({ aoPublicar }) {
@@ -19,32 +19,51 @@ export default function CriarPost({ aoPublicar }) {
   const [aba, setAba] = useState("editar");
   const [publicando, setPublicando] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
+  const idNutricionista = usuarioLogado.id || usuarioLogado._id || usuarioLogado.uid || "";
 
   async function handlePublicar() {
+    if (!idNutricionista) {
+      setFeedback("Não foi possível identificar o nutricionista logado.");
+      return;
+    }
+
     if (!dados.titulo.trim()) {
       alert("O post precisa ter um título.");
+      return;
+    }
+
+    if (
+      !dados.subtitulo.trim() ||
+      !dados.resumo_do_post.trim() ||
+      !dados.corpo.trim() ||
+      !dados.imagemUrl.trim()
+    ) {
+      alert("Preencha título, subtítulo, resumo, conteúdo e URL da imagem.");
       return;
     }
 
     setPublicando(true);
     setFeedback("");
 
-    const resultado = await publicarPost({
-      titulo: dados.titulo,
-      subtitulo: dados.subtitulo,
-      corpo: dados.corpo,
-      // imagem: dados.imagemArquivo  ← descomente quando tiver API
-    });
-
-    setPublicando(false);
-
-    if (resultado.sucesso) {
-      aoPublicar?.({
-        post: { ...dados, autor: "Você", dataPublicacao: "Agora" },
-        toast: { tipo: "sucesso", texto: resultado.texto },
+    try {
+      const postPublicado = await publicarPost({
+        titulo: dados.titulo.trim(),
+        subtitulo: dados.subtitulo.trim(),
+        resumo_do_post: dados.resumo_do_post.trim(),
+        conteudo: dados.corpo.trim(),
+        imagem_post: dados.imagemUrl.trim(),
+        id_nutricionista: idNutricionista,
       });
-    } else {
-      setFeedback("❌ Erro ao publicar. Tente novamente.");
+
+      aoPublicar?.({
+        post: postPublicado,
+        toast: { tipo: "sucesso", texto: "Post publicado com sucesso!" },
+      });
+    } catch (error) {
+      setFeedback(error.message || "Erro ao publicar. Tente novamente.");
+    } finally {
+      setPublicando(false);
     }
   }
 
@@ -61,7 +80,7 @@ export default function CriarPost({ aoPublicar }) {
             {aba === "editar" ? "Pré-visualização" : "Editar"}
           </Button>
           <Button onClick={handlePublicar} disabled={publicando}>
-            {publicando ? "Publicando..." : "Continuar"}
+            {publicando ? "Publicando..." : "Postar"}
           </Button>
         </div>
 

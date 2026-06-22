@@ -4,6 +4,14 @@
 //   - dados: { titulo, subtitulo, corpo, imagemUrl, autor, dataPublicacao }
 //   - modoCompleto: boolean — se true, exibe autor e data (padrão: false)
 export default function PostPreview({ dados, modoCompleto = false }) {
+  const formatDatePtBr = (timestamp) => {
+    return new Intl.DateTimeFormat('pt-BR', {
+      dateStyle: 'long',
+      timeStyle: 'short',
+      timeZone: 'America/Sao_Paulo',
+    }).format(new Date(timestamp));
+  }
+
   return (
     <article style={{ fontFamily: "inherit" }}>
       {/* Imagem de capa com título sobreposto */}
@@ -57,7 +65,7 @@ export default function PostPreview({ dados, modoCompleto = false }) {
                 }}
               >
                 <span>👤 {dados.autor || "Autor"}</span>
-                <span>{dados.dataPublicacao || "Data não informada"}</span>
+                <span>{dados.dataPublicacao ? formatDatePtBr(dados.dataPublicacao) : "Data não informada"}</span>
               </div>
             )}
           </div>
@@ -72,7 +80,7 @@ export default function PostPreview({ dados, modoCompleto = false }) {
           {modoCompleto && (
             <p style={{ color: "#888", fontSize: "0.85rem" }}>
               👤 {dados.autor || "Autor"} ·{" "}
-              {dados.dataPublicacao || "Data não informada"}
+              {dados.dataPublicacao ? formatDatePtBr(dados.dataPublicacao) : "Data não informada"}
             </p>
           )}
         </div>
@@ -102,6 +110,22 @@ export default function PostPreview({ dados, modoCompleto = false }) {
             margin: "0 24px 32px",
           }}
         />
+      )}
+
+      {dados.resumo_do_post && (
+        <div
+          style={{
+            margin: "0 24px 24px",
+            padding: "16px 18px",
+            borderRadius: "12px",
+            background: "#f5f7f7",
+            color: "#2f2f2f",
+            fontSize: "0.98rem",
+            lineHeight: "1.7",
+          }}
+        >
+          {dados.resumo_do_post}
+        </div>
       )}
 
       {/* Corpo do post */}

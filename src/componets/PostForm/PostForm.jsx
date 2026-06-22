@@ -1,5 +1,3 @@
-import ImageUpload from "./ImageUpload";
-
 export default function PostForm({ dados, aoAtualizar }) {
   function handleChange(campo, valor) {
     aoAtualizar({ ...dados, [campo]: valor });
@@ -7,12 +5,39 @@ export default function PostForm({ dados, aoAtualizar }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <ImageUpload
-        imagemUrl={dados.imagemUrl}
-        aoSelecionarImagem={({ arquivo, urlLocal }) =>
-          aoAtualizar({ ...dados, imagemUrl: urlLocal, imagemArquivo: arquivo })
-        }
+      <input
+        type="text"
+        placeholder="URL da imagem"
+        value={dados.imagemUrl}
+        onChange={(e) => handleChange("imagemUrl", e.target.value)}
+        style={estiloInput({})}
       />
+
+      <div
+        style={{
+          width: "100%",
+          height: "260px",
+          backgroundColor: "#d9d9d9",
+          borderRadius: "8px",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {dados.imagemUrl ? (
+          <img
+            src={dados.imagemUrl}
+            alt="Imagem do post"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <span style={{ fontSize: "1rem", color: "#555", userSelect: "none" }}>
+            Pré-visualização da imagem
+          </span>
+        )}
+      </div>
+
       <input
         type="text"
         placeholder="Título"
@@ -20,6 +45,7 @@ export default function PostForm({ dados, aoAtualizar }) {
         onChange={(e) => handleChange("titulo", e.target.value)}
         style={estiloInput({ grande: true })}
       />
+
       <input
         type="text"
         placeholder="Adicionar um subtítulo..."
@@ -27,6 +53,15 @@ export default function PostForm({ dados, aoAtualizar }) {
         onChange={(e) => handleChange("subtitulo", e.target.value)}
         style={estiloInput({})}
       />
+
+      <input
+        type="text"
+        placeholder="Resumo do Post"
+        value={dados.resumo_do_post}
+        onChange={(e) => handleChange("resumo_do_post", e.target.value)}
+        style={estiloInput({})}
+      />
+
       <textarea
         placeholder="Comece a escrever..."
         value={dados.corpo}

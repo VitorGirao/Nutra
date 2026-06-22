@@ -5,7 +5,7 @@ import CardBody from './CardBody';
 import CardFooter from './CardFooter';
 import './PostCard.css';
 
-function PostCard({ post, isSalvo, onLerMais, onSalvar, onOpcoes }) {
+function PostCard({ post, isSalvo, canManagePost = false, canDeletePost = false, canSavePost = false, onLerMais, onSalvar, onOpcoes, onExcluir }) {
   const autor = post.autor || {};
 
   return (
@@ -30,8 +30,12 @@ function PostCard({ post, isSalvo, onLerMais, onSalvar, onOpcoes }) {
       
       <CardFooter 
         isSalvo={isSalvo}
+        canManagePost={canManagePost}
+        canDeletePost={canDeletePost}
+        canSavePost={canSavePost}
         onSalvar={() => onSalvar && onSalvar(post.id)} 
         onLerMais={() => onLerMais && onLerMais(post)} 
+        onExcluir={() => onExcluir && onExcluir(post.id)}
       />
     </article>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../services/api';
 import './CadastroNutricionista.css';
 import './auth.css';
 
@@ -91,7 +92,7 @@ export default function CadastroNutricionista() {
     }
 
     try {
-      const resposta = await fetch('http://localhost:3001/nutricionistas', {
+      const resposta = await fetch(`${API_BASE_URL}/nutricionistas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
