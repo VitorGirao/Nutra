@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import EscolhaPerfil from './componets/EscolherPerfil/EscolherPerfil';
 import CadastroNutricionista from './componets/CadastroLogin/CadastroNutricionista';
+import CadastroPaciente from './componets/CadastroLogin/CadastroPaciente';
 import Login from './componets/CadastroLogin/Login';
 import PesquisaNutricionistas from "./pages/PesquisaNutricionistas";
 import PerfilNutricionistas from './componets/PerfilNutricionistas/PerfilNutricionistas';
@@ -40,6 +41,7 @@ function App() {
           <Route path='/landing' element={<LandingPage />} />
           <Route path='/criar-post' element={<CriarPostPage />} />
           <Route path='/ver-post/:id' element={<PostAbertoPage />} />
+          <Route path='/CadastroPaciente' element={<CadastroPaciente/>}/>
         </Routes>
       </BrowserRouter>
     </div>

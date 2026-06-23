@@ -49,12 +49,10 @@ export default function CadastroPaciente() {
   const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
   const [erroMensagem, setErroMensagem] = useState('');
 
-  // Funções de Máscara e Validação de Entrada
   const handleTelefoneChange = (e) => {
-    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 dígitos numéricos
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 11) valor = valor.slice(0, 11);
 
-    // Aplica a formatação (XX) X XXXX-XXXX
     if (valor.length > 6) {
       valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
     } else if (valor.length > 2) {
@@ -67,10 +65,9 @@ export default function CadastroPaciente() {
   };
 
   const handleCepChange = (e) => {
-    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (valor.length > 8) valor = valor.slice(0, 8); // Limita a 8 dígitos numéricos
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 8) valor = valor.slice(0, 8);
 
-    // Aplica a formatação XXXXX-XXX
     if (valor.length > 5) {
       valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
     }
@@ -87,7 +84,6 @@ export default function CadastroPaciente() {
       return;
     }
 
-    // Validação extra para os campos que possuem máscara
     const telefoneLimpo = telefone.replace(/\D/g, '');
     if (telefoneLimpo && telefoneLimpo.length < 11) {
       setErroMensagem('Por favor, insira um número de telefone celular válido com DDD.');
@@ -107,7 +103,7 @@ export default function CadastroPaciente() {
         senha,
         cep,
         genero,
-        numero: telefone,
+        telefone,
       });
 
       alert('Conta criada com sucesso!');
