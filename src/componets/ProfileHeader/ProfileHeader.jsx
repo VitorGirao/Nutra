@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Componente ProfileHeader:
@@ -6,13 +6,17 @@ import { useState, useRef } from 'react';
  * e gerenciar a funcionalidade de upload de nova foto.
  * * @param {string} nome - Nome do usuário para exibição da inicial (fallback).
 */
-export default function ProfileHeader({ nome }) {
+export default function ProfileHeader({ nome, photoUrl, canEditPhoto = true }) {
     // Estado para armazenar temporariamente a URL da foto selecionada para preview
-    const [fotoUrl, setFotoUrl] = useState(null);
+    const [fotoUrl, setFotoUrl] = useState(photoUrl || null);
 
     // Referência (useRef) para acessar diretamente o elemento input de arquivo,
     // permitindo disparar o clique via botão estilizado.
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        setFotoUrl(photoUrl || null);
+    }, [photoUrl]);
 
     // Manipulador que processa o arquivo escolhido pelo usuário
     const handleFotoChange = (e) => {
@@ -40,27 +44,31 @@ export default function ProfileHeader({ nome }) {
                 )}
             </div>
 
-            {/* Input de arquivo (tipo file) escondido via CSS.
-                Utilizamos o fileInputRef para disparar o comportamento padrão de seleção 
-                de arquivos a partir do botão visível.
-            */}
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFotoChange}
-                accept="image/png, image/jpeg, image/jpg"
-                style={{ display: 'none' }}
-            />
+            {canEditPhoto && (
+                <>
+                    {/* Input de arquivo (tipo file) escondido via CSS.
+                        Utilizamos o fileInputRef para disparar o comportamento padrão de seleção 
+                        de arquivos a partir do botão visível.
+                    */}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFotoChange}
+                        accept="image/png, image/jpeg, image/jpg"
+                        style={{ display: 'none' }}
+                    />
 
-            {/* Botão customizado que ativa o seletor de arquivos */}
-            <button type="button" className="btn-upload-photo" onClick={handleButtonClick}>
-                Alterar foto
-            </button>
+                    {/* Botão customizado que ativa o seletor de arquivos */}
+                    <button type="button" className="btn-upload-photo" onClick={handleButtonClick}>
+                        Alterar foto
+                    </button>
 
-            {/* Texto auxiliar de especificações técnicas */}
-            <span className="photo-formats-text">
-                JPG, PNG ou WebP. Máx. 2MB.
-            </span>
+                    {/* Texto auxiliar de especificações técnicas */}
+                    <span className="photo-formats-text">
+                        JPG, PNG ou WebP. Máx. 2MB.
+                    </span>
+                </>
+            )}
         </div>
     );
 }

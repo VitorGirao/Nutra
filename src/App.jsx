@@ -14,6 +14,8 @@ import PostAberto from './pages/PostsAberto/PostAberto';
 import CriarPostPage from './pages/CriarPostPage/CriarPostPage';
 import PostAbertoPage from './pages/Postabertopage/Postabertopage';
 import Feed from './pages/Feed';
+import VisualizarPerfilNutri from './pages/VisualizarPerfilNutri';
+import VisualizarPerfilPaciente from './pages/VisualizarPerfilPaciente';
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
           <Route path="/pesquisa" element={<PesquisaNutricionistas />} />
           <Route path="/PerfilNutricionistas" element={<PerfilNutricionistas />} />
           <Route path="/editar-perfil" element={<EditarPerfil />} />
+          <Route path="/visualizar-perfil-nutri" element={<VisualizarPerfilNutri />} />
+          <Route path="/visualizar-perfil-paciente" element={<VisualizarPerfilPaciente />} />
           <Route path='/landing' element={<LandingPage />} />
           <Route path='/criar-post' element={<CriarPostPage />} />
           <Route path='/ver-post/:id' element={<PostAbertoPage />} />

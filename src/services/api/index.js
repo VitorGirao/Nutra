@@ -115,3 +115,27 @@ export async function createPaciente(payload) {
 
   return body;
 }
+
+export async function updateProfile(userType, userId, payload) {
+  const basePath = String(userType || "").toLowerCase() === "paciente" ? "pacientes" : "nutricionistas";
+  const response = await fetch(`${API_BASE_URL}/${basePath}/${userId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  const body = isJson ? await response.json() : null;
+
+  if (!response.ok) {
+    const message = body?.message || `Request failed with status ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.code = body?.code;
+    error.details = body?.details;
+    throw error;
+  }
+
+  return body;
+}

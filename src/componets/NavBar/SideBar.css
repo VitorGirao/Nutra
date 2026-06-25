@@ -74,6 +74,19 @@
   border-radius: 50%;
   object-fit: cover;
   background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.sidebar-avatar--initials {
+  background-color: #15B392;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
 }
 
 .sidebar-user-text {

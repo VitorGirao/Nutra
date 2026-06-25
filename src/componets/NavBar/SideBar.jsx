@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './SideBar.css';
 import SideBarButton from '../Buttons/SideBarButton';
-import { Avatar } from '../Cards/AvatarCard/Avatar';
 
 const converterUrlGithub = (url) => {
   if (!url) return "";
@@ -63,7 +62,21 @@ function SideBar() {
     }
   }, []);
 
-  const fotoPadrao = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces";
+  const nomeInicial = usuario?.nome ? usuario.nome.charAt(0).toUpperCase() : 'U';
+  const fotoUrl = usuario?.foto_do_nutricionista ? converterUrlGithub(usuario.foto_do_nutricionista) : '';
+
+  const handlePerfilClick = () => {
+    const dadosSalvos = localStorage.getItem('usuarioLogado');
+    const usuarioAtual = dadosSalvos ? JSON.parse(dadosSalvos) : usuario;
+    const tipoUsuario = usuarioAtual?.tipo_usuario || '';
+
+    if (String(tipoUsuario).toLowerCase() === 'paciente') {
+      navigate('/visualizar-perfil-paciente');
+      return;
+    }
+
+    navigate('/visualizar-perfil-nutri');
+  };
 
   return (
     <aside className="sidebar-container">
@@ -94,14 +107,21 @@ function SideBar() {
 
       <div className="sidebar-footer">
         <button
-          className={`sidebar-profile-card ${rota === '/perfil' ? 'sidebar-profile-card--active' : ''}`}
-          onClick={() => navigate('/perfil')}
+          className={`sidebar-profile-card ${rota === '/visualizar-perfil-nutri' || rota === '/visualizar-perfil-paciente' ? 'sidebar-profile-card--active' : ''}`}
+          onClick={handlePerfilClick}
         >
           <div className="sidebar-profile-info">
-            <Avatar 
-              src={usuario?.foto_do_nutricionista ? converterUrlGithub(usuario.foto_do_nutricionista) : fotoPadrao} 
-              alt="Foto de perfil" 
-            />
+            {fotoUrl ? (
+              <img
+                src={fotoUrl}
+                alt="Foto de perfil"
+                className="sidebar-avatar"
+              />
+            ) : (
+              <div className="sidebar-avatar sidebar-avatar--initials" aria-label="Inicial do perfil">
+                {nomeInicial}
+              </div>
+            )}
             <div className="sidebar-user-text">
               <span className="sidebar-username">
                 {usuario ? usuario.nome : 'Nutricionista'}

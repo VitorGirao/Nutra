@@ -6,7 +6,9 @@
  * - handleChange: Função callback para atualizar o estado conforme digitação.
  * - handleSubmit: Função callback para processar o salvamento.
  */
-export default function ProfileForm({ formData, handleChange, handleSubmit }) {
+export default function ProfileForm({ formData, handleChange, handleSubmit, handleCancel }) {
+  const isNutricionista = Boolean(formData?.isNutricionista);
+
   return (
     <form onSubmit={handleSubmit} className="profile-form-wrapper">
 
@@ -24,24 +26,42 @@ export default function ProfileForm({ formData, handleChange, handleSubmit }) {
             <input type="text" name="nome" value={formData.nome} onChange={handleChange} required />
           </div>
           <div className="input-group">
-            <label>Sobrenome</label>
-            <input type="text" name="sobrenome" value={formData.sobrenome} onChange={handleChange} required />
-          </div>
-          <div className="input-group">
             <label>E-mail</label>
             <input type="email" name="email" value={formData.email} onChange={handleChange} required />
           </div>
-          {/* Campo CRN - type="text" */}
-          <div className="input-group">
-            <label>CRN</label>
-            <input
-              type="text"
-              name="crn"
-              placeholder="Ex: CRN-5/12345 ou CRN-5/T-1234/P"
-              value={formData.crn}
-              onChange={handleChange}
-            />
-          </div>
+          {isNutricionista ? (
+            <>
+              <div className="input-group">
+                <label>CRN</label>
+                <input
+                  type="text"
+                  name="crn"
+                  placeholder="Ex: CRN-5/12345 ou CRN-5/T-1234/P"
+                  value={formData.crn}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="input-group">
+                <label>Especialidade</label>
+                <input
+                  type="text"
+                  name="especialidade"
+                  value={formData.especialidade}
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="input-group">
+              <label>Gênero</label>
+              <input
+                type="text"
+                name="genero"
+                value={formData.genero}
+                onChange={handleChange}
+              />
+            </div>
+          )}
           <div className="input-group">
             <label>Cidade</label>
             <input type="text" name="cidade" value={formData.cidade} onChange={handleChange} />
@@ -77,13 +97,13 @@ export default function ProfileForm({ formData, handleChange, handleSubmit }) {
           />
           {/* Contador de caracteres */}
           <small className="char-counter">
-            {formData.sobreMim.length} / 300 caracteres
+            {(formData.sobreMim || '').length} / 300 caracteres
           </small>
         </div>
       </div>
 
       <div className="action-buttons">
-        <button type="button" className="btn-cancel">Cancelar</button>
+        <button type="button" className="btn-cancel" onClick={handleCancel}>Cancelar</button>
         <button type="submit" className="btn-save">Salvar Alterações</button>
       </div>
     </form>

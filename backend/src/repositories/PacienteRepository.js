@@ -32,6 +32,10 @@ class PacienteRepositoryClass {
     return { id: doc.id, ...doc.data() };
   }
 
+  async update(pacienteId, dadosAtualizados) {
+    await db.collection(COLLECTION).doc(pacienteId).update(dadosAtualizados);
+  }
+
   async addFavorito(pacienteId, postId) {
     await db.collection(COLLECTION).doc(pacienteId).update({
       "id posts salvos": FieldValue.arrayUnion(postId)

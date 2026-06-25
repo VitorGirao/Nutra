@@ -39,6 +39,10 @@ class NutricionistaRepositoryClass {
     return { id: doc.id, ...doc.data() };
   }
 
+  async update(nutriId, dadosAtualizados) {
+    await db.collection(COLLECTION).doc(nutriId).update(dadosAtualizados);
+  }
+
   async addFavorito(nutriId, postId) {
     await db.collection(COLLECTION).doc(nutriId).update({
       "id posts salvos": FieldValue.arrayUnion(postId)

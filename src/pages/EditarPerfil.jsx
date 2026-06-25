@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SideBar from '../componets/NavBar/SideBar';
 import ProfileHeader from '../componets/ProfileHeader/ProfileHeader';
 import ProfileForm from '../componets/ProfileForm/ProfileForm';
+import { createProfileFormData, logoutUser } from '../services/profileService';
+import { updateProfile } from '../services/api';
 import './editar-perfil.css';
 
 export default function EditarPerfil() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nome: 'Andressa',
-    sobrenome: 'Souza',
-    email: 'andressa.souza@gmail.com',
-    crn: 'CRN-5/12345',
-    cidade: 'Quixadá',
-    telefone: '(85) 9 9999-9999',
-    sobreMim: 'Olá, sou a Andressa...'
+    nome: '',
+    sobrenome: '',
+    email: '',
+    crn: '',
+    especialidade: '',
+    cidade: '',
+    telefone: '',
+    genero: '',
+    sobreMim: '',
+    isNutricionista: false,
   });
+
+  useEffect(() => {
+    setFormData(createProfileFormData());
+  }, []);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -36,9 +47,53 @@ export default function EditarPerfil() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleCancel = () => {
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+    const tipoUsuario = String(usuarioLogado.tipo_usuario || 'Nutricionista').toLowerCase();
+    navigate(tipoUsuario === 'paciente' ? '/visualizar-perfil-paciente' : '/visualizar-perfil-nutri');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Alterações salvas com sucesso!');
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+    const confirmed = window.confirm('Deseja realmente salvar estas alterações no perfil?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const payload = {
+        nome: formData.nome,
+        email: formData.email,
+        telefone: formData.telefone,
+        cep: formData.cidade,
+        genero: formData.genero,
+        crn: formData.crn,
+        especialidade: formData.especialidade,
+        sobreMim: formData.sobreMim,
+      };
+
+      const resultado = await updateProfile(usuarioLogado.tipo_usuario || 'Nutricionista', usuarioLogado.id, payload);
+      const atualizado = {
+        ...usuarioLogado,
+        ...resultado,
+        tipo_usuario: usuarioLogado.tipo_usuario || 'Nutricionista',
+      };
+
+      localStorage.setItem('usuarioLogado', JSON.stringify(atualizado));
+      window.alert('Perfil atualizado com sucesso!');
+
+      const tipoUsuario = String(usuarioLogado.tipo_usuario || 'Nutricionista').toLowerCase();
+      navigate(tipoUsuario === 'paciente' ? '/visualizar-perfil-paciente' : '/visualizar-perfil-nutri');
+    } catch (error) {
+      window.alert(error.message || 'Não foi possível atualizar o perfil.');
+    }
+  };
+
+  const handleLogout = () => {
+    logoutUser(navigate);
   };
 
   return (
@@ -46,17 +101,22 @@ export default function EditarPerfil() {
       <SideBar />
       <main className="pesquisa-conteudo-principal">
         <div className="editar-perfil-conteudo">
-          <h1 className="page-title">Editar Perfil</h1>
-          <p className="page-subtitle">Atualize suas informações pessoais e profissionais</p>
+          <div className="page-header-row">
+            <div>
+              <h1 className="page-title">Editar Perfil</h1>
+              <p className="page-subtitle">Atualize suas informações pessoais e profissionais</p>
+            </div>
+            <button type="button" className="btn-logout" onClick={handleLogout}>Sair</button>
+          </div>
           <div className="profile-layout">
 
             {/* Card da foto com classe específica */}
             <div className="photo-card">
-              <ProfileHeader nome={formData.nome} />
+              <ProfileHeader nome={formData.nome} photoUrl={formData.photoUrl} canEditPhoto={formData.isNutricionista} />
             </div>
 
             {/* Formulário ocupa o resto */}
-            <ProfileForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} />
+            <ProfileForm formData={formData} handleChange={handleChange} handleSubmit={handleSubmit} handleCancel={handleCancel} />
 
           </div>
         </div>

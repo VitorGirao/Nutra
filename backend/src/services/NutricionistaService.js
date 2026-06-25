@@ -88,6 +88,28 @@ export class NutricionistaService {
     return toNutricionista(nutricionista);
   }
 
+  async atualizarPerfil(nutriId, dadosFormulario) {
+    const nutricionista = await NutricionistaRepository.findById(nutriId);
+    if (!nutricionista) {
+      throw new Error("Nutricionista não encontrado.");
+    }
+
+    const dadosParaAtualizar = {
+      nome: dadosFormulario.nome,
+      email: dadosFormulario.email,
+      crn: dadosFormulario.crn || "",
+      cep: dadosFormulario.cep || "",
+      genero: dadosFormulario.genero || "",
+      numero: dadosFormulario.telefone || "",
+      especialidade: dadosFormulario.especialidade || "",
+      meu_resumo: dadosFormulario.sobreMim || "",
+      foto_do_nutricionista: dadosFormulario.foto_do_nutricionista || nutricionista.foto_do_nutricionista || "",
+    };
+
+    await NutricionistaRepository.update(nutriId, dadosParaAtualizar);
+    return toNutricionista({ id: nutriId, ...nutricionista, ...dadosParaAtualizar });
+  }
+
 async alternarFavorito(nutriId, postId) {
     const nutricionista = await NutricionistaRepository.findById(nutriId);
     if (!nutricionista) {

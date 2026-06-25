@@ -40,6 +40,15 @@ router.post("/pacientes", async (req, res, next) => {
   }
 });
 
+router.put("/pacientes/:id", async (req, res, next) => {
+  try {
+    const pacienteAtualizado = await service.atualizarPerfil(req.params.id, req.body);
+    res.status(200).json(pacienteAtualizado);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/pacientes/:id/favoritar", async (req, res, next) => {
   try {
     const { id } = req.params;

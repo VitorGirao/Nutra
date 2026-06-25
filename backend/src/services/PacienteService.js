@@ -43,8 +43,25 @@ export class PacienteService {
     return toPaciente(novoPaciente);
   }
 
-  async alternarFavorito(pacienteId, postId) {
+  async atualizarPerfil(pacienteId, dadosFormulario) {
     const paciente = await PacienteRepository.findById(pacienteId);
+    if (!paciente) {
+      throw new Error("Paciente não encontrado.");
+    }
+
+    const dadosParaAtualizar = {
+      nome: dadosFormulario.nome,
+      email: dadosFormulario.email,
+      cep: dadosFormulario.cep || "",
+      genero: dadosFormulario.genero || "",
+      numero: dadosFormulario.telefone || "",
+    };
+
+    await PacienteRepository.update(pacienteId, dadosParaAtualizar);
+    return toPaciente({ id: pacienteId, ...paciente, ...dadosParaAtualizar });
+  }
+
+  async alternarFavorito(pacienteId, postId) {
     if (!paciente) {
       throw new Error("Paciente não encontrado.");
     }

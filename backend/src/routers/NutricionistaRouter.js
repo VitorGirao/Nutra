@@ -52,6 +52,15 @@ router.post("/nutricionistas", async (req, res, next) => {
   }
 });
 
+router.put("/nutricionistas/:id", async (req, res, next) => {
+  try {
+    const nutricionistaAtualizado = await service.atualizarPerfil(req.params.id, req.body);
+    res.status(200).json(nutricionistaAtualizado);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/nutricionistas/:id/favoritar", async (req, res, next) => {
   try {
     const { id } = req.params;

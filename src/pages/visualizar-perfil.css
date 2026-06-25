@@ -1,0 +1,198 @@
+/* ==========================================================================
+   LAYOUT GERAL DA VISUALIZAÇÃO
+   ========================================================================== */
+.layout-app {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #F8FAFC; 
+}
+
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: 24px 32px 40px;
+  margin-left: 280px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 8px;
+}
+
+.view-profile-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 24px;
+  padding-bottom: 24px;
+}
+
+/* ==========================================================================
+   COLUNA ESQUERDA (Avatar)
+   ========================================================================== */
+.view-profile-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.view-avatar-card {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-circle.large {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-color: #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748B;
+  font-size: 3.5rem;
+  font-weight: bold;
+  overflow: hidden;
+  padding: 0;
+}
+
+.avatar-circle.large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ==========================================================================
+   COLUNA DIREITA (Dados do Perfil em Cards)
+   ========================================================================== */
+.view-profile-data {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.data-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px 40px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.data-card h2 {
+  font-size: 1.25rem;
+  color: #1A1A1A;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #F1F5F9;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.data-card h2 .material-symbols-outlined {
+  color: #15B392;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 24px 32px; 
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.data-label {
+  font-size: 0.85rem;
+  color: #64748B;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.data-value {
+  font-size: 1rem;
+  color: #1A1A1A;
+  font-weight: 500;
+  background-color: #F8FAFC;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+}
+
+.biography-text {
+  line-height: 1.6;
+  white-space: pre-wrap; 
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+/* ==========================================================================
+   BOTÕES INFERIORES (ESTILO FIGMA)
+   ========================================================================== */
+.action-buttons-bottom {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 16px;
+  margin-top: 24px; 
+}
+
+.btn-view-logout {
+  background-color: transparent;
+  color: #EF4444; 
+  border: 1px solid #EF4444;
+  border-radius: 8px; 
+  padding: 12px 48px; 
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-view-logout:hover {
+  background-color: #FEF2F2;
+}
+
+.btn-view-edit {
+  background-color: #15B392; 
+  color: white;
+  border: none;
+  border-radius: 8px; 
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; 
+  transition: all 0.2s ease;
+}
+
+.btn-view-edit:hover {
+  background-color: #129e80;
+}
+
+.btn-view-edit .material-symbols-outlined {
+  font-size: 1.2rem;
+}
