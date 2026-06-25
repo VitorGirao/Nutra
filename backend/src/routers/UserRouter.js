@@ -17,4 +17,17 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
+router.post("/recuperar-senha", async (req, res, next) => {
+  try {
+    const resultado = await service.recuperarSenha(req.body);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    if (error.status === 400) {
+      return res.status(400).json({ message: error.message });
+    }
+
+    return res.status(500).json({ message: error.message || "Não foi possível atualizar a senha." });
+  }
+});
+
 export default router;

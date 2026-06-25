@@ -84,6 +84,13 @@ export default function VisualizarPerfilNutri() {
               >
                 sair
               </button>
+
+              <button
+                className="btn-view-edit"
+                onClick={() => navigate('/esqueci-senha', { state: { email: perfil.email } })}
+              >
+                Alterar senha
+              </button>
               
               <button 
                 className="btn-view-edit" 

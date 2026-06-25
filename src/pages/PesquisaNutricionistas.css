@@ -90,7 +90,7 @@ a {
 .cards-grid {
   padding: 0 4.375rem 3.75rem; /* Convertido de 0 70px 60px */
   display: grid;
-  /* minmax convertido de 240px para 15rem */
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, max-content));
   gap: 1.75rem; /* Convertido de 28px */
+  justify-content: start;
 }

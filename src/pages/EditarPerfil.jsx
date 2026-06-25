@@ -19,6 +19,7 @@ export default function EditarPerfil() {
     telefone: '',
     genero: '',
     sobreMim: '',
+    photoUrl: '',
     isNutricionista: false,
   });
 
@@ -73,6 +74,7 @@ export default function EditarPerfil() {
         crn: formData.crn,
         especialidade: formData.especialidade,
         sobreMim: formData.sobreMim,
+        foto_do_nutricionista: formData.photoUrl || '',
       };
 
       const resultado = await updateProfile(usuarioLogado.tipo_usuario || 'Nutricionista', usuarioLogado.id, payload);
@@ -80,6 +82,7 @@ export default function EditarPerfil() {
         ...usuarioLogado,
         ...resultado,
         tipo_usuario: usuarioLogado.tipo_usuario || 'Nutricionista',
+        foto_do_nutricionista: formData.photoUrl || resultado?.foto_do_nutricionista || usuarioLogado.foto_do_nutricionista || '',
       };
 
       localStorage.setItem('usuarioLogado', JSON.stringify(atualizado));
@@ -112,7 +115,12 @@ export default function EditarPerfil() {
 
             {/* Card da foto com classe específica */}
             <div className="photo-card">
-              <ProfileHeader nome={formData.nome} photoUrl={formData.photoUrl} canEditPhoto={formData.isNutricionista} />
+              <ProfileHeader
+                nome={formData.nome}
+                photoUrl={formData.photoUrl}
+                canEditPhoto={formData.isNutricionista}
+                onPhotoUrlChange={(value) => setFormData(prev => ({ ...prev, photoUrl: value }))}
+              />
             </div>
 
             {/* Formulário ocupa o resto */}

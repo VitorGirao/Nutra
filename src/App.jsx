@@ -14,8 +14,10 @@ import PostAberto from './pages/PostsAberto/PostAberto';
 import CriarPostPage from './pages/CriarPostPage/CriarPostPage';
 import PostAbertoPage from './pages/Postabertopage/Postabertopage';
 import Feed from './pages/Feed';
+import MeusSalvos from './pages/MeusSalvos';
 import VisualizarPerfilNutri from './pages/VisualizarPerfilNutri';
 import VisualizarPerfilPaciente from './pages/VisualizarPerfilPaciente';
+import EsqueciSenha from './componets/CadastroLogin/EsqueciSenha';
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
           <Route path="/CadastroNutricionista" element={<CadastroNutricionista />} />
           <Route path="/login" element={<Login />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/salvos" element={<MeusSalvos />} />
           <Route path="/pesquisa" element={<PesquisaNutricionistas />} />
           <Route path="/PerfilNutricionistas" element={<PerfilNutricionistas />} />
           <Route path="/editar-perfil" element={<EditarPerfil />} />
@@ -46,6 +49,8 @@ function App() {
           <Route path='/criar-post' element={<CriarPostPage />} />
           <Route path='/ver-post/:id' element={<PostAbertoPage />} />
           <Route path='/CadastroPaciente' element={<CadastroPaciente/>}/>
+          <Route path='/esqueci-senha' element={<EsqueciSenha />} />
+          <Route path='/Esqueci-a-senha' element={<EsqueciSenha />} />
         </Routes>
       </BrowserRouter>
     </div>

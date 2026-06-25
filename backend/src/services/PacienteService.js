@@ -55,6 +55,7 @@ export class PacienteService {
       cep: dadosFormulario.cep || "",
       genero: dadosFormulario.genero || "",
       numero: dadosFormulario.telefone || "",
+      foto_do_nutricionista: dadosFormulario.foto_do_nutricionista || dadosFormulario.photoUrl || paciente.foto_do_nutricionista || "",
     };
 
     await PacienteRepository.update(pacienteId, dadosParaAtualizar);
@@ -62,6 +63,7 @@ export class PacienteService {
   }
 
   async alternarFavorito(pacienteId, postId) {
+    const paciente = await PacienteRepository.findById(pacienteId);
     if (!paciente) {
       throw new Error("Paciente não encontrado.");
     }

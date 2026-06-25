@@ -103,14 +103,14 @@ export class NutricionistaService {
       numero: dadosFormulario.telefone || "",
       especialidade: dadosFormulario.especialidade || "",
       meu_resumo: dadosFormulario.sobreMim || "",
-      foto_do_nutricionista: dadosFormulario.foto_do_nutricionista || nutricionista.foto_do_nutricionista || "",
+      foto_do_nutricionista: dadosFormulario.foto_do_nutricionista || dadosFormulario.photoUrl || nutricionista.foto_do_nutricionista || "",
     };
 
     await NutricionistaRepository.update(nutriId, dadosParaAtualizar);
     return toNutricionista({ id: nutriId, ...nutricionista, ...dadosParaAtualizar });
   }
 
-async alternarFavorito(nutriId, postId) {
+  async alternarFavorito(nutriId, postId) {
     const nutricionista = await NutricionistaRepository.findById(nutriId);
     if (!nutricionista) {
       throw new Error("Nutricionista não encontrado.");
