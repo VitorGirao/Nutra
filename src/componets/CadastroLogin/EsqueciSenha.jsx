@@ -6,27 +6,47 @@ import './EsqueciSenha.css';
 export default function EsqueciSenha() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('');
-  const [novaSenha, setNovaSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [erroMensagem, setErroMensagem] = useState('');
-  const [sucessoMensagem, setSucessoMensagem] = useState('');
-  const [carregando, setCarregando] = useState(false);
-  const [mostrarNovaSenha, setMostrarNovaSenha] = useState(false);
-  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
+
+  const [form, setForm] = useState({
+    email: '',
+    novaSenha: '',
+    confirmarSenha: '',
+    erroMensagem: '',
+    sucessoMensagem: '',
+    carregando: false,
+    mostrarNovaSenha: false,
+    mostrarConfirmarSenha: false,
+  });
+
+  const {
+    email,
+    novaSenha,
+    confirmarSenha,
+    erroMensagem,
+    sucessoMensagem,
+    carregando,
+    mostrarNovaSenha,
+    mostrarConfirmarSenha,
+  } = form;
 
   useEffect(() => {
     const emailInicial = location.state?.email || '';
     if (emailInicial) {
-      setEmail(emailInicial);
+      setForm((prev) => ({ ...prev, email: emailInicial }));
     }
   }, [location.state]);
 
+  const atualizarCampo = (campo) => (evento) => {
+    setForm((prev) => ({ ...prev, [campo]: evento.target.value }));
+  };
+
+  const alternarCampoBooleano = (campo) => {
+    setForm((prev) => ({ ...prev, [campo]: !prev[campo] }));
+  };
+
   const handleSubmit = async (evento) => {
     evento.preventDefault();
-    setErroMensagem('');
-    setSucessoMensagem('');
-    setCarregando(true);
+    setForm((prev) => ({ ...prev, erroMensagem: '', sucessoMensagem: '', carregando: true }));
 
     try {
       const resposta = await fetch(`${API_BASE_URL}/recuperar-senha`, {
@@ -41,16 +61,19 @@ export default function EsqueciSenha() {
         throw new Error(dadosResultado.message || 'Não foi possível atualizar a senha.');
       }
 
-      setSucessoMensagem(dadosResultado.message || 'Senha atualizada com sucesso.');
-      setEmail('');
-      setNovaSenha('');
-      setConfirmarSenha('');
+      setForm((prev) => ({
+        ...prev,
+        sucessoMensagem: dadosResultado.message || 'Senha atualizada com sucesso.',
+        email: '',
+        novaSenha: '',
+        confirmarSenha: '',
+      }));
 
       setTimeout(() => navigate('/login'), 1200);
     } catch (erro) {
-      setErroMensagem(erro.message || 'Não foi possível conectar ao servidor.');
+      setForm((prev) => ({ ...prev, erroMensagem: erro.message || 'Não foi possível conectar ao servidor.' }));
     } finally {
-      setCarregando(false);
+      setForm((prev) => ({ ...prev, carregando: false }));
     }
   };
 
@@ -72,7 +95,7 @@ export default function EsqueciSenha() {
               placeholder="E-mail"
               className="auth-input"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={atualizarCampo('email')}
               required
               readOnly={Boolean(location.state?.email)}
               disabled={Boolean(location.state?.email)}
@@ -84,13 +107,13 @@ export default function EsqueciSenha() {
                 placeholder="Nova senha"
                 className="auth-input"
                 value={novaSenha}
-                onChange={(e) => setNovaSenha(e.target.value)}
+                onChange={atualizarCampo('novaSenha')}
                 required
               />
 
               <span
                 className="auth-eye-icon"
-                onClick={() => setMostrarNovaSenha(!mostrarNovaSenha)}
+                onClick={() => alternarCampoBooleano('mostrarNovaSenha')}
               >
                 {mostrarNovaSenha ? (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -112,13 +135,13 @@ export default function EsqueciSenha() {
                 placeholder="Confirmar nova senha"
                 className="auth-input"
                 value={confirmarSenha}
-                onChange={(e) => setConfirmarSenha(e.target.value)}
+                onChange={atualizarCampo('confirmarSenha')}
                 required
               />
 
               <span
                 className="auth-eye-icon"
-                onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                onClick={() => alternarCampoBooleano('mostrarConfirmarSenha')}
               >
                 {mostrarConfirmarSenha ? (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

@@ -20,26 +20,47 @@ function EyeIcon({ aberto }) {
 
 export default function CadastroNutricionista() {
   const navigate = useNavigate();
-  
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [crn, setCrn] = useState('');
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [genero, setGenero] = useState('');
 
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
-  const [erroMensagem, setErroMensagem] = useState('');
+  const [form, setForm] = useState({
+    nome: '',
+    email: '',
+    crn: '',
+    senha: '',
+    confirmarSenha: '',
+    telefone: '',
+    cep: '',
+    genero: '',
+    mostrarSenha: false,
+    mostrarConfirmarSenha: false,
+    erroMensagem: '',
+  });
 
-  // Funções de Máscara e Validação
+  const {
+    nome,
+    email,
+    crn,
+    senha,
+    confirmarSenha,
+    telefone,
+    cep,
+    genero,
+    mostrarSenha,
+    mostrarConfirmarSenha,
+    erroMensagem,
+  } = form;
+
+  const atualizarCampo = (campo) => (evento) => {
+    setForm((prev) => ({ ...prev, [campo]: evento.target.value }));
+  };
+
+  const alternarCampoBooleano = (campo) => {
+    setForm((prev) => ({ ...prev, [campo]: !prev[campo] }));
+  };
+
   const handleTelefoneChange = (e) => {
-    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 dígitos
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 11) valor = valor.slice(0, 11);
 
-    // Aplica a formatação (XX) X XXXX-XXXX
     if (valor.length > 6) {
       valor = `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
     } else if (valor.length > 2) {
@@ -47,47 +68,45 @@ export default function CadastroNutricionista() {
     } else if (valor.length > 0) {
       valor = `(${valor}`;
     }
-    
-    setTelefone(valor);
+
+    setForm((prev) => ({ ...prev, telefone: valor }));
   };
 
   const handleCepChange = (e) => {
-    let valor = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (valor.length > 8) valor = valor.slice(0, 8); // Limita a 8 dígitos
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 8) valor = valor.slice(0, 8);
 
-    // Aplica a formatação XXXXX-XXX
     if (valor.length > 5) {
       valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
     }
-    
-    setCep(valor);
+
+    setForm((prev) => ({ ...prev, cep: valor }));
   };
 
   const handleCrnChange = (e) => {
-    let valor = e.target.value.replace(/\D/g, ''); // Garante apenas números no CRN
-    if (valor.length > 8) valor = valor.slice(0, 8); // Limita o tamanho (ajuste se necessário)
-    setCrn(valor);
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length > 8) valor = valor.slice(0, 8);
+    setForm((prev) => ({ ...prev, crn: valor }));
   };
 
   const handleCadastro = async (evento) => {
     evento.preventDefault();
-    setErroMensagem('');
+    setForm((prev) => ({ ...prev, erroMensagem: '' }));
 
     if (senha !== confirmarSenha) {
-      setErroMensagem('As senhas não coincidem!');
+      setForm((prev) => ({ ...prev, erroMensagem: 'As senhas não coincidem!' }));
       return;
     }
 
-    // Validação extra opcional para garantir que os campos mascarados estão completos
     const telefoneLimpo = telefone.replace(/\D/g, '');
     if (telefoneLimpo && telefoneLimpo.length < 10) {
-      setErroMensagem('Por favor, insira um telefone válido.');
+      setForm((prev) => ({ ...prev, erroMensagem: 'Por favor, insira um telefone válido.' }));
       return;
     }
 
     const cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo && cepLimpo.length < 8) {
-      setErroMensagem('Por favor, insira um CEP válido.');
+      setForm((prev) => ({ ...prev, erroMensagem: 'Por favor, insira um CEP válido.' }));
       return;
     }
 
@@ -104,7 +123,7 @@ export default function CadastroNutricionista() {
           crn,
           cep: cepLimpo,
           telefone: telefoneLimpo,
-          genero
+          genero,
         }),
       });
 
@@ -115,10 +134,9 @@ export default function CadastroNutricionista() {
       }
 
       alert('Cadastro de nutricionista criado com sucesso!');
-      navigate('/login'); 
-
+      navigate('/login');
     } catch (erro) {
-      setErroMensagem(erro.message || 'Não foi possível conectar ao servidor.');
+      setForm((prev) => ({ ...prev, erroMensagem: erro.message || 'Não foi possível conectar ao servidor.' }));
     }
   };
 
@@ -132,31 +150,31 @@ export default function CadastroNutricionista() {
             <h1>Crie sua conta</h1>
 
             <form className="auth-form auth-form--compact cadastro-nutricionista-form" onSubmit={handleCadastro}>
-              <input type="text" placeholder="Nome" className="auth-input" value={nome} onChange={(e) => setNome(e.target.value)} required />
-              
-              <input type="email" placeholder="E-mail" className="auth-input" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input type="text" placeholder="Nome" className="auth-input" value={nome} onChange={atualizarCampo('nome')} required />
+
+              <input type="email" placeholder="E-mail" className="auth-input" value={email} onChange={atualizarCampo('email')} required />
 
               <div className="auth-password-group">
-                <input type={mostrarSenha ? 'text' : 'password'} placeholder="Senha" className="auth-input" value={senha} onChange={(e) => setSenha(e.target.value)} required />
-                <span className="auth-eye-icon" onClick={() => setMostrarSenha(!mostrarSenha)}>
+                <input type={mostrarSenha ? 'text' : 'password'} placeholder="Senha" className="auth-input" value={senha} onChange={atualizarCampo('senha')} required />
+                <span className="auth-eye-icon" onClick={() => alternarCampoBooleano('mostrarSenha')}>
                   <EyeIcon aberto={mostrarSenha} />
                 </span>
               </div>
 
               <div className="auth-password-group">
-                <input type={mostrarConfirmarSenha ? 'text' : 'password'} placeholder="Confirmar senha" className="auth-input" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} required />
-                <span className="auth-eye-icon" onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}>
+                <input type={mostrarConfirmarSenha ? 'text' : 'password'} placeholder="Confirmar senha" className="auth-input" value={confirmarSenha} onChange={atualizarCampo('confirmarSenha')} required />
+                <span className="auth-eye-icon" onClick={() => alternarCampoBooleano('mostrarConfirmarSenha')}>
                   <EyeIcon aberto={mostrarConfirmarSenha} />
                 </span>
               </div>
 
               <input type="text" placeholder="CRN (Apenas números)" className="auth-input" value={crn} onChange={handleCrnChange} required />
-              
+
               <input type="text" placeholder="CEP" className="auth-input" value={cep} onChange={handleCepChange} maxLength={9} />
-              
+
               <input type="tel" placeholder="(00) 90000-0000" className="auth-input" value={telefone} onChange={handleTelefoneChange} maxLength={15} />
 
-              <select className="auth-input" value={genero} onChange={(e) => setGenero(e.target.value)} required>
+              <select className="auth-input" value={genero} onChange={atualizarCampo('genero')} required>
                 <option value="" disabled>Gênero</option>
                 <option value="feminino">Feminino</option>
                 <option value="masculino">Masculino</option>

@@ -37,9 +37,7 @@ function CardHeader({ foto, nome, sub, onOpcoes }) {
           <span className="card-header-comp__sub">{sub}</span>
         </div>
       </div>
-      <button className="card-header-comp__btn" onClick={onOpcoes}>
-        <OptionsIcon />
-      </button>
+      
     </header>
   );
 }

@@ -61,12 +61,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   width: 100%;
   padding: 12px 0;
-  border-bottom: 1px solid #eaeaea; /* Adiciona uma linha divisória sutil entre as linhas */
+  border-bottom: 1px solid #eaeaea;
 }
 
-/* Remove a linha divisória do último nutricionista para não ficar duplo com o footer */
 .professional-row:last-child {
   border-bottom: none;
 }
@@ -75,32 +75,44 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1; /* Permite que os textos usem o espaço necessário antes do botão */
+  flex: 1;
+  min-width: 0;
 }
 
-/* CORRIGIDO: Seletor direto para a imagem do avatar */
 .prof-avatar-card {
-  width: 48px !important; /* Tamanho intermediário e ideal para o card */
+  width: 48px !important;
   height: 48px !important;
-  min-width: 48px; /* Impede o flexbox de esmagar a foto em telas menores */
-  border-radius: 50% !important; /* Força a imagem a ficar 100% redonda */
-  object-fit: cover !important; /* Impede a foto de ficar esticada ou distorcida */
+  min-width: 48px;
+  border-radius: 50% !important;
+  object-fit: cover !important;
 }
 
 .text-group {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
+  flex: 1;
 }
 
 .professional-name {
   font-weight: 600;
   color: #1a1a1a;
   font-size: 16px;
-  white-space: nowrap; /* Evita que o nome quebre em duas linhas */
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .professional-role {
   color: #666666;
   font-size: 14px;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

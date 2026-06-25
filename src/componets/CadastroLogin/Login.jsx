@@ -1,20 +1,32 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Adicionado useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../services/api';
-import './auth.css'; // Importa o CSS base em rem que já está na mesma pasta
+import './auth.css';
 
 export default function Login() {
-  const navigate = useNavigate(); // Ativa o redirecionamento
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erroMensagem, setErroMensagem] = useState('');
-  const [carregando, setCarregando] = useState(false);
-  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: '',
+    senha: '',
+    erroMensagem: '',
+    carregando: false,
+    mostrarSenha: false,
+  });
+
+  const { email, senha, erroMensagem, carregando, mostrarSenha } = form;
+
+  const atualizarCampo = (campo) => (evento) => {
+    setForm((prev) => ({ ...prev, [campo]: evento.target.value }));
+  };
+
+  const alternarCampoBooleano = (campo) => {
+    setForm((prev) => ({ ...prev, [campo]: !prev[campo] }));
+  };
 
   const handleLogin = async (evento) => {
     evento.preventDefault();
-    setErroMensagem('');
-    setCarregando(true);
+    setForm((prev) => ({ ...prev, erroMensagem: '', carregando: true }));
 
     try {
       const resposta = await fetch(`${API_BASE_URL}/login`, {
@@ -31,28 +43,22 @@ export default function Login() {
         throw new Error(dadosResultado.message || 'E-mail ou senha incorretos.');
       }
 
-      // SALVA A SESSÃO: Guarda o objeto do nutricionista purinho no navegador como texto
       localStorage.setItem('usuarioLogado', JSON.stringify(dadosResultado));
 
       alert('Login efetuado com sucesso! Bem-vindo.');
-      
-      // Redireciona para o feed
       navigate('/feed');
-
     } catch (erro) {
-      setErroMensagem(erro.message || 'Não foi possível conectar ao servidor.');
+      setForm((prev) => ({ ...prev, erroMensagem: erro.message || 'Não foi possível conectar ao servidor.' }));
     } finally {
-      setCarregando(false);
+      setForm((prev) => ({ ...prev, carregando: false }));
     }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        {/* Lado esquerdo: Carrega a imagem do abacaxi automaticamente pelo auth.css */}
         <div className="auth-brand-section"></div>
 
-        {/* Lado direito: Formulário */}
         <div className="auth-form-section login-section">
           <h1>Olá, Seja Bem Vindo!</h1>
 
@@ -62,7 +68,7 @@ export default function Login() {
               placeholder="E-mail"
               className="auth-input"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={atualizarCampo('email')}
               required
             />
 
@@ -72,13 +78,13 @@ export default function Login() {
                 placeholder="Senha"
                 className={`auth-input ${erroMensagem ? 'error' : ''}`}
                 value={senha}
-                onChange={(e) => setSenha(e.target.value)}
+                onChange={atualizarCampo('senha')}
                 required
               />
 
               <span
                 className="auth-eye-icon"
-                onClick={() => setMostrarSenha(!mostrarSenha)}
+                onClick={() => alternarCampoBooleano('mostrarSenha')}
               >
                 {mostrarSenha ? (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -111,7 +117,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Links inferiores ajustados para as rotas que configuramos */}
           <p className="auth-link-text">
             Ainda não tem conta? <Link to="/">Criar</Link>
           </p>

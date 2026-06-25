@@ -129,9 +129,7 @@ function SideBar() {
               <span className="sidebar-user-sub">Ver perfil &gt;</span>
             </div>
           </div>
-          <span className="sidebar-more-icon">
-            <MoreIcon />
-          </span>
+          
         </button>
       </div>
     </aside>

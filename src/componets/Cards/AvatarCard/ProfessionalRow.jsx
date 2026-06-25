@@ -18,7 +18,7 @@ export function ProfessionalRow({ nutricionista, name, role, imageSrc }) {
                 <Avatar className="prof-avatar-card" src={imageSrc} alt={name} />
 
                 <div className="text-group">
-                    <span className="professional-name">{name}</span>
+                    <span className="professional-name truncate">{name}</span>
                     <span className="professional-role">{role}</span>
                 </div>
             </div>

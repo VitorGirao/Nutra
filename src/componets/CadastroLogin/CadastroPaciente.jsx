@@ -37,17 +37,40 @@ function EyeIcon({ aberto }) {
 
 export default function CadastroPaciente() {
   const navigate = useNavigate();
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cep, setCep] = useState('');
-  const [genero, setGenero] = useState('');
 
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
-  const [erroMensagem, setErroMensagem] = useState('');
+  const [form, setForm] = useState({
+    nome: '',
+    email: '',
+    senha: '',
+    confirmarSenha: '',
+    telefone: '',
+    cep: '',
+    genero: '',
+    mostrarSenha: false,
+    mostrarConfirmarSenha: false,
+    erroMensagem: '',
+  });
+
+  const {
+    nome,
+    email,
+    senha,
+    confirmarSenha,
+    telefone,
+    cep,
+    genero,
+    mostrarSenha,
+    mostrarConfirmarSenha,
+    erroMensagem,
+  } = form;
+
+  const atualizarCampo = (campo) => (e) => {
+    setForm((prev) => ({ ...prev, [campo]: e.target.value }));
+  };
+
+  const alternarCampoBooleano = (campo) => {
+    setForm((prev) => ({ ...prev, [campo]: !prev[campo] }));
+  };
 
   const handleTelefoneChange = (e) => {
     let valor = e.target.value.replace(/\D/g, '');
@@ -60,8 +83,8 @@ export default function CadastroPaciente() {
     } else if (valor.length > 0) {
       valor = `(${valor}`;
     }
-    
-    setTelefone(valor);
+
+    setForm((prev) => ({ ...prev, telefone: valor }));
   };
 
   const handleCepChange = (e) => {
@@ -71,28 +94,28 @@ export default function CadastroPaciente() {
     if (valor.length > 5) {
       valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
     }
-    
-    setCep(valor);
+
+    setForm((prev) => ({ ...prev, cep: valor }));
   };
 
   const handleCadastro = async (evento) => {
     evento.preventDefault();
-    setErroMensagem('');
+    setForm((prev) => ({ ...prev, erroMensagem: '' }));
 
     if (senha !== confirmarSenha) {
-      setErroMensagem('As senhas não coincidem!');
+      setForm((prev) => ({ ...prev, erroMensagem: 'As senhas não coincidem!' }));
       return;
     }
 
     const telefoneLimpo = telefone.replace(/\D/g, '');
     if (telefoneLimpo && telefoneLimpo.length < 11) {
-      setErroMensagem('Por favor, insira um número de telefone celular válido com DDD.');
+      setForm((prev) => ({ ...prev, erroMensagem: 'Por favor, insira um número de telefone celular válido com DDD.' }));
       return;
     }
 
     const cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo && cepLimpo.length < 8) {
-      setErroMensagem('Por favor, insira um CEP válido.');
+      setForm((prev) => ({ ...prev, erroMensagem: 'Por favor, insira um CEP válido.' }));
       return;
     }
 
@@ -101,15 +124,15 @@ export default function CadastroPaciente() {
         nome,
         email,
         senha,
-        cep,
+        cep: cepLimpo,
         genero,
-        telefone,
+        telefone: telefoneLimpo,
       });
 
       alert('Conta criada com sucesso!');
       navigate('/login');
     } catch (erro) {
-      setErroMensagem(erro.message || 'Não foi possível criar a conta.');
+      setForm((prev) => ({ ...prev, erroMensagem: erro.message || 'Não foi possível criar a conta.' }));
     }
   };
 
@@ -127,7 +150,7 @@ export default function CadastroPaciente() {
               placeholder="Nome"
               className="auth-input"
               value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              onChange={atualizarCampo('nome')}
               required
             />
 
@@ -136,7 +159,7 @@ export default function CadastroPaciente() {
               placeholder="E-mail"
               className="auth-input"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={atualizarCampo('email')}
               required
             />
 
@@ -146,13 +169,13 @@ export default function CadastroPaciente() {
                 placeholder="Senha"
                 className="auth-input"
                 value={senha}
-                onChange={(e) => setSenha(e.target.value)}
+                onChange={atualizarCampo('senha')}
                 required
               />
 
               <span
                 className="auth-eye-icon"
-                onClick={() => setMostrarSenha(!mostrarSenha)}
+                onClick={() => alternarCampoBooleano('mostrarSenha')}
               >
                 <EyeIcon aberto={mostrarSenha} />
               </span>
@@ -164,13 +187,13 @@ export default function CadastroPaciente() {
                 placeholder="Confirmar senha"
                 className="auth-input"
                 value={confirmarSenha}
-                onChange={(e) => setConfirmarSenha(e.target.value)}
+                onChange={atualizarCampo('confirmarSenha')}
                 required
               />
 
               <span
                 className="auth-eye-icon"
-                onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
+                onClick={() => alternarCampoBooleano('mostrarConfirmarSenha')}
               >
                 <EyeIcon aberto={mostrarConfirmarSenha} />
               </span>
@@ -197,7 +220,7 @@ export default function CadastroPaciente() {
             <select
               className="auth-input"
               value={genero}
-              onChange={(e) => setGenero(e.target.value)}
+              onChange={atualizarCampo('genero')}
               required
             >
               <option value="" disabled>
